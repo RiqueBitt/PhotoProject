@@ -13,6 +13,44 @@ on:
         required: true
 
 jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar Ninja
+        run: choco install ninja -y
+      - name: Instalar Qt 6.8.3 (MSVC)
+        shell: bash
+        run: |
+          pip install --break-system-packages -q aqtinstall || pip install -q aqtinstall
+          aqt install-qt windows desktop 6.8.3 win64_msvc2022_64 -m qtimageformats qtpdf -O "$GITHUB_WORKSPACE/.deps/Qt"
+      - name: Configurar e compilar (preset release)
+        shell: cmd
+        run: |
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat" || call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
+          cmake --preset release -DCMAKE_PREFIX_PATH="%GITHUB_WORKSPACE%\.deps\Qt\6.8.3\msvc2022_64"
+          cmake --build --preset release
+      - name: Verificar o executável gerado
+        shell: bash
+        run: test -f build/release/patchy.exe || { echo "build/release/patchy.exe não foi gerado."; exit 1; }
+      - name: Empacotar (windeployqt + zip)
+        shell: cmd
+        run: |
+          set QT_PREFIX=%GITHUB_WORKSPACE%\.deps\Qt\6.8.3\msvc2022_64
+          set STAGE=%GITHUB_WORKSPACE%\stage
+          mkdir "%STAGE%"
+          copy /Y build\release\patchy.exe "%STAGE%\" || exit /b 1
+          "%QT_PREFIX%\bin\windeployqt.exe" --release --no-compiler-runtime --no-translations "%STAGE%\patchy.exe"
+          if errorlevel 1 exit /b 1
+      - name: Compactar
+        shell: pwsh
+        run: |
+          Compress-Archive -Path "$env:GITHUB_WORKSPACE\stage\*" -DestinationPath "$env:GITHUB_WORKSPACE\photoproject-${{ inputs.version }}-win.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: photoproject-win
+          path: photoproject-${{ inputs.version }}-win.zip
+
   build-linux:
     runs-on: ubuntu-24.04
     steps:
@@ -75,7 +113,7 @@ jobs:
           path: photoproject-${{ inputs.version }}-linux.tar.gz
 
   publish:
-    needs: [build-linux]
+    needs: [build-windows, build-linux]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
@@ -85,6 +123,7 @@ jobs:
           GH_TOKEN: ${{ secrets.RELEASES_REPO_TOKEN }}
         run: |
           gh release create "v${{ inputs.version }}" \
+            dist/photoproject-win/photoproject-${{ inputs.version }}-win.zip \
             dist/photoproject-linux/photoproject-${{ inputs.version }}-linux.tar.gz \
             --repo RiqueBitt/PhotoProject_releases- \
             --title "PhotoProject v${{ inputs.version }}" \
