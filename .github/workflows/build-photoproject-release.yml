@@ -21,6 +21,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Instalar Ninja
         run: choco install ninja -y
+      - name: Configurar ambiente MSVC (cl.exe no PATH)
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
       - name: Instalar Qt 6.8.3 (MSVC)
         shell: bash
         run: |
@@ -29,8 +33,7 @@ jobs:
       - name: Configurar e compilar (preset release)
         shell: cmd
         run: |
-          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat" || call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
-          cmake --preset release -DCMAKE_PREFIX_PATH="%GITHUB_WORKSPACE%\.deps\Qt\6.8.3\msvc2022_64" > configure-log.txt 2>&1
+          cmake --preset release -DCMAKE_PREFIX_PATH="%GITHUB_WORKSPACE%\.deps\Qt\6.8.3\msvc2022_64" -DCMAKE_CXX_COMPILER=cl -DCMAKE_C_COMPILER=cl > configure-log.txt 2>&1
           set CONFIGURE_RESULT=%ERRORLEVEL%
           type configure-log.txt
           if not "%CONFIGURE_RESULT%"=="0" exit /b %CONFIGURE_RESULT%
