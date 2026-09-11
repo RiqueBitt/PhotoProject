@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.rtsoft.patchy</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <name>Patchy</name>
+  <summary>PSD-oriented raster image editor</summary>
+  <description>
+    <p>
+      Patchy is a fast raster image editor built around the Photoshop PSD format:
+      layers, folders, masks, adjustment layers, layer styles, and text layers
+      round-trip with Photoshop. It ships Photoshop-style tools (marquee, lasso,
+      magnetic lasso, magic wand, quick select, brushes with .abr import and
+      dynamics, clone, smudge, gradients), palette-constrained indexed-color
+      editing for pixel artists, and exact indexed PNG-8/BMP export.
+    </p>
+  </description>
+  <launchable type="desktop-id">com.rtsoft.patchy.desktop</launchable>
+  <url type="homepage">https://github.com/SethRobinson/Patchy</url>
+  <url type="bugtracker">https://github.com/SethRobinson/Patchy/issues</url>
+  <developer id="com.rtsoft">
+    <name>Seth A. Robinson</name>
+  </developer>
+  <content_rating type="oars-1.1"/>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>tablet</control>
+  </supports>
+  <releases>
+    <release version="0.92" date="2026-09-09"/>
+    <release version="0.91" date="2026-09-03"/>
+    <release version="0.90" date="2026-08-26"/>
+    <release version="0.89" date="2026-08-10"/>
+    <release version="0.88" date="2026-08-06"/>
+    <release version="0.87" date="2026-08-04"/>
+    <release version="0.86" date="2026-07-29"/>
+    <release version="0.85" date="2026-07-27"/>
+    <release version="0.84" date="2026-07-26"/>
+    <release version="0.83" date="2026-07-25"/>
+    <release version="0.82" date="2026-07-21"/>
+    <release version="0.81" date="2026-07-20"/>
+    <release version="0.80" date="2026-07-18"/>
+    <release version="0.20" date="2026-07-15"/>
+    <release version="0.16" date="2026-07-11"/>
+    <release version="0.15" date="2026-07-08"/>
+    <release version="0.14" date="2026-07-08"/>
+    <release version="0.13" date="2026-07-06"/>
+  </releases>
+</component>
