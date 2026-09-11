@@ -1,9 +1,0 @@
-=== token tem valor? tamanho ===
-40
-=== quem eh esse token ===
-RiqueBitt
-=== acesso ao repo de releases ===
-{"full_name":"RiqueBitt/PhotoProject_releases-","permissions":{"admin":true,"maintain":true,"pull":true,"push":true,"triage":true}}
-=== tentativa real de criar release ===
-https://github.com/RiqueBitt/PhotoProject_releases-/releases/tag/v0.92.0
-CODIGO: 0

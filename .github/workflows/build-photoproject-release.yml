@@ -77,42 +77,15 @@ jobs:
   publish:
     needs: [build-linux]
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with: { path: dist }
-      - name: Publicar release em PhotoProject_releases (diagnostico)
+      - name: Publicar release em PhotoProject_releases
         env:
           GH_TOKEN: ${{ secrets.RELEASES_REPO_TOKEN }}
         run: |
-          set +e
-          {
-            echo "=== token tem valor? tamanho ==="
-            echo -n "$GH_TOKEN" | wc -c
-            echo "=== quem eh esse token ==="
-            gh api user --jq '.login' 2>&1
-            echo "=== acesso ao repo de releases ==="
-            gh api repos/RiqueBitt/PhotoProject_releases- --jq '{full_name, permissions}' 2>&1
-            echo "=== tentativa real de criar release ==="
-            gh release create "v${{ inputs.version }}" \
-              dist/photoproject-linux/photoproject-${{ inputs.version }}-linux.tar.gz \
-              --repo RiqueBitt/PhotoProject_releases- \
-              --title "PhotoProject v${{ inputs.version }}" \
-              --notes "Build automática do PhotoProject." 2>&1
-            echo "CODIGO: $?"
-          } > /tmp/diag-result.txt 2>&1
-          cat /tmp/diag-result.txt
-      - name: Gravar resultado no repositorio
-        if: always()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          mkdir -p .diag
-          cp /tmp/diag-result.txt .diag/result.txt
-          git config user.email "actions@github.com"
-          git config user.name "GitHub Actions"
-          git add .diag/result.txt
-          git commit -m "Resultado do diagnostico" || echo "nada para commitar"
-          git push "https://x-access-token:${GH_TOKEN}@github.com/RiqueBitt/PhotoProject.git" HEAD:main
+          gh release create "v${{ inputs.version }}" \
+            dist/photoproject-linux/photoproject-${{ inputs.version }}-linux.tar.gz \
+            --repo RiqueBitt/PhotoProject_releases- \
+            --title "PhotoProject v${{ inputs.version }}" \
+            --notes "Build automática do PhotoProject — editor de imagem opcional do Project Club."
