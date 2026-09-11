@@ -1,0 +1,91 @@
+name: Build PhotoProject release
+
+# Empacota o PhotoProject (editor de imagem, base Patchy) no formato que
+# o módulo do Project Club consome — um arquivo único por plataforma,
+# mesmo padrão já usado pelo ProjectMC (ver goldapple-launcher/.github/
+# workflows/build-projectmc-release.yml).
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Versão a publicar (ex: 1.0.0) — usada na tag e no nome dos arquivos'
+        required: true
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar dependências do sistema
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
+            libgl-dev libegl-dev libxkbcommon-dev libxkbcommon-x11-0 \
+            libfontconfig1 libfreetype6 libdbus-1-3 \
+            libxcb1 libx11-xcb1 libxcb-cursor0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 \
+            libxcb-randr0 libxcb-render-util0 libxcb-shape0 libxcb-shm0 libxcb-sync1 \
+            libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxcb-glx0 libxcb-util1 \
+            libsm6 libice6 libxext6 libxrender1 \
+            fonts-liberation fonts-dejavu-core \
+            ninja-build
+      - name: Instalar Qt 6.8.3
+        run: |
+          pip install --break-system-packages -q aqtinstall
+          aqt install-qt linux desktop 6.8.3 linux_gcc_64 -m qtimageformats qtpdf -O "$GITHUB_WORKSPACE/.deps/Qt"
+      - name: Configurar e compilar (preset linux-release)
+        run: |
+          cmake --preset linux-release
+          cmake --build --preset linux-release -j "$(nproc)"
+      - name: Verificar o executável gerado
+        run: |
+          test -f build/linux-release/patchy || { echo "build/linux-release/patchy não foi gerado."; exit 1; }
+      - name: Empacotar (binário + bibliotecas Qt necessárias)
+        run: |
+          set -e
+          QT_DIR="$GITHUB_WORKSPACE/.deps/Qt/6.8.3/gcc_64"
+          STAGE="$GITHUB_WORKSPACE/stage"
+          mkdir -p "$STAGE/lib" "$STAGE/plugins/platforms" "$STAGE/plugins/imageformats" "$STAGE/plugins/tls"
+          cp build/linux-release/patchy "$STAGE/"
+          # Bibliotecas Qt principais que o binário linka diretamente —
+          # ldd lista as dependências reais, filtra só as que vêm do
+          # próprio diretório do Qt instalado (as do sistema operacional
+          # já são esperadas nos pacotes apt instalados acima).
+          for lib in $(ldd build/linux-release/patchy | grep "$QT_DIR" | awk '{print $3}'); do
+            cp -n "$lib" "$STAGE/lib/" || true
+          done
+          cp "$QT_DIR"/plugins/platforms/libqxcb.so "$STAGE/plugins/platforms/" 2>/dev/null || true
+          cp "$QT_DIR"/plugins/platforms/libqoffscreen.so "$STAGE/plugins/platforms/" 2>/dev/null || true
+          for p in qgif qjpeg qsvg qtiff qwebp; do
+            cp "$QT_DIR/plugins/imageformats/lib${p}.so" "$STAGE/plugins/imageformats/" 2>/dev/null || true
+          done
+          cat > "$STAGE/photoproject.sh" << 'LAUNCHER_EOF'
+#!/bin/bash
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export LD_LIBRARY_PATH="$DIR/lib:$LD_LIBRARY_PATH"
+export QT_PLUGIN_PATH="$DIR/plugins"
+exec "$DIR/patchy" "$@"
+LAUNCHER_EOF
+          chmod +x "$STAGE/photoproject.sh" "$STAGE/patchy"
+          cd "$GITHUB_WORKSPACE"
+          tar -C stage -czf "photoproject-${{ inputs.version }}-linux.tar.gz" .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: photoproject-linux
+          path: photoproject-${{ inputs.version }}-linux.tar.gz
+
+  publish:
+    needs: [build-linux]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with: { path: dist }
+      - name: Publicar release em PhotoProject_releases
+        env:
+          GH_TOKEN: ${{ secrets.RELEASES_REPO_TOKEN }}
+        run: |
+          gh release create "v${{ inputs.version }}" \
+            dist/photoproject-linux/photoproject-${{ inputs.version }}-linux.tar.gz \
+            --repo RiqueBitt/PhotoProject_releases \
+            --title "PhotoProject v${{ inputs.version }}" \
+            --notes "Build automática do PhotoProject — editor de imagem opcional do Project Club. Windows ainda não incluído nesta versão."
