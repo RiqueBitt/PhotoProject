@@ -42,7 +42,7 @@ void configure_document_page(QPdfWriter& writer, const Document& document) {
   // change the document's physical size. Exact sizes only.
   const QPageSize page_size(QSizeF(std::max(page_width_points, 1.0), std::max(page_height_points, 1.0)),
                             QPageSize::Point, QString(), QPageSize::ExactMatch);
-  writer.setCreator(QStringLiteral("Patchy"));
+  writer.setCreator(QStringLiteral("PhotoProject"));
   writer.setPageSize(page_size);
   writer.setPageMargins(QMarginsF(0.0, 0.0, 0.0, 0.0));
   // The device resolution only sets the painter's logical grid; keeping it at the

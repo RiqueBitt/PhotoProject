@@ -393,10 +393,10 @@ void MainWindow::open_smart_object_contents() {
   if (!lock_reason.empty() && lock_reason != "external") {
     if (lock_reason == "filters") {
       show_status_error(
-          tr("This smart object has Smart Filters; Patchy keeps Photoshop's preview (rasterize to edit pixels)"));
+          tr("This smart object has Smart Filters; PhotoProject keeps Photoshop's preview (rasterize to edit pixels)"));
     } else if (lock_reason == "warp" || lock_reason == "non_affine") {
       show_status_error(
-          tr("This smart object has a warp or perspective transform; Patchy keeps Photoshop's preview"));
+          tr("This smart object has a warp or perspective transform; PhotoProject keeps Photoshop's preview"));
     } else {
       show_status_error(tr("This smart object can only be preserved, not edited"));
     }
@@ -447,7 +447,7 @@ void MainWindow::open_smart_object_contents() {
   if (contents_format != SmartObjectContentsFormat::PsdDocument &&
       contents_format != SmartObjectContentsFormat::QtImage) {
     show_status_error(
-        tr("Patchy can't re-encode %1 contents; use Export Smart Object Contents or rasterize the layer")
+        tr("PhotoProject can't re-encode %1 contents; use Export Smart Object Contents or rasterize the layer")
             .arg(QString::fromStdString(source->filename)));
     return;
   }
@@ -512,7 +512,7 @@ void MainWindow::prompt_paint_on_smart_object(CanvasWidget* canvas, LayerId laye
           ? tr("Rasterize the layer to paint on its pixels, or open the smart object's contents in "
                "their own tab and draw there.")
           : tr("Rasterize the layer to paint on its pixels. This smart object's contents can't be "
-               "edited in Patchy."));
+               "edited in PhotoProject."));
   QPushButton* edit_button =
       can_edit_contents ? box.addButton(tr("Edit Contents"), QMessageBox::AcceptRole) : nullptr;
   auto* rasterize_button = box.addButton(tr("Rasterize"), QMessageBox::DestructiveRole);
@@ -1269,7 +1269,7 @@ void MainWindow::replace_smart_object_contents_with_path(const QString& path) {
   if (contents_format != SmartObjectContentsFormat::PsdDocument &&
       contents_format != SmartObjectContentsFormat::QtImage) {
     show_critical_message(this, tr("Replace failed"),
-                          tr("%1 is not a file type Patchy can embed and edit").arg(info.fileName()),
+                          tr("%1 is not a file type PhotoProject can embed and edit").arg(info.fileName()),
                           QStringLiteral("replaceSmartObjectFailedMessageBox"));
     return;
   }

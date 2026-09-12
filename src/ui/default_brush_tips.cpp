@@ -1053,7 +1053,7 @@ void stamp_shoe_print(CoverageBuffer& buffer, float cx, float cy) {
 }  // namespace
 
 QString default_brush_tips_folder_name() {
-  return QObject::tr("Patchy Defaults");
+  return QObject::tr("PhotoProject Defaults");
 }
 
 std::vector<DefaultBrushTipSpec> generate_default_brush_tips() {

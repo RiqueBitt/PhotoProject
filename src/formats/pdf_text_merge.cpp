@@ -348,7 +348,7 @@ struct ContentRewriter {
 // Qt builds a subset font's ToUnicode map by reverse-looking-up each glyph in the
 // face's cmap and keeping the LOWEST code point, so the space glyph (which Arial and
 // friends also use for tab, CR and LF) comes back as U+0009 and an importer reads
-// "Patchy\tPDF". Control characters never draw, so any destination in a bfchar/bfrange
+// "PhotoProject\tPDF". Control characters never draw, so any destination in a bfchar/bfrange
 // that is one of them can only have meant the space glyph. Same-length rewrite.
 bool repair_to_unicode(std::string& cmap) {
   bool changed = false;

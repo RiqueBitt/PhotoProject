@@ -2139,7 +2139,7 @@ void write_flat_image_file(const Document& document, const QString& path, const 
   // x265 on the Flatpak runtime) can silently HEVC-encode on some platforms but not
   // others; Patchy never writes HEVC.
   if (heif::is_heif_extension(lower)) {
-    throw std::runtime_error("HEIC/HEIF images are read-only in Patchy; save as PNG or PSD instead.");
+    throw std::runtime_error("HEIC/HEIF images are read-only in PhotoProject; save as PNG or PSD instead.");
   }
   if (lower == "tga") {
     tga::DocumentIo::write_file(document, to_filesystem_path(path));

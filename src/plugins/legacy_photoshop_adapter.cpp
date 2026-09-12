@@ -132,7 +132,7 @@ LegacyPhotoshopPluginProbe LegacyPhotoshopAdapter::probe(const std::filesystem::
   // an x64 PE on an x64 Linux host would even probe as supported.)
   if (architecture == "x86" || architecture == "x64" || architecture == "arm64" ||
       architecture == "pe-unknown") {
-    return {kind, false, "Legacy Photoshop plug-ins are Windows binaries; they require the Windows build of Patchy.",
+    return {kind, false, "Legacy Photoshop plug-ins are Windows binaries; they require the Windows build of PhotoProject.",
             architecture};
   }
 #endif
@@ -140,7 +140,7 @@ LegacyPhotoshopPluginProbe LegacyPhotoshopAdapter::probe(const std::filesystem::
     return {kind, false, "32-bit Photoshop plug-ins require a 32-bit compatibility host.", architecture};
   }
   if ((architecture == "x64" || architecture == "arm64") && host_architecture() != architecture) {
-    return {kind, false, "Plug-in architecture does not match this Patchy build.", architecture};
+    return {kind, false, "Plug-in architecture does not match this PhotoProject build.", architecture};
   }
 
   if (kind == LegacyPhotoshopPluginKind::Automation8li) {

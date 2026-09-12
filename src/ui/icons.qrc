@@ -110,5 +110,9 @@
     <file alias="tool-pan.svg">icons/tool-pan.svg</file>
     <file alias="tool-zoom.svg">icons/tool-zoom.svg</file>
     <file alias="tool-flyout-corner.svg">icons/tool-flyout-corner.svg</file>
+    <!-- Item pedido: "com a cara do Project Club" — o logo "PC" real
+         usado no splash/tela "Sobre" (ver splash_artwork.cpp), no
+         mesmo estilo visual do ícone do app. -->
+    <file alias="app-logo.png">icons/app-logo.png</file>
   </qresource>
 </RCC>

@@ -494,7 +494,7 @@ std::vector<std::uint8_t> write_palette_bytes(std::span<const RgbColor> colors, 
     }
     case PaletteFileFormat::Gpl: {
       text = "GIMP Palette\nName: ";
-      text += name.empty() ? std::string_view{"Patchy Palette"} : name;
+      text += name.empty() ? std::string_view{"PhotoProject Palette"} : name;
       text += "\nColumns: 16\n#\n";
       for (std::size_t i = 0; i < colors.size(); ++i) {
         const auto& color = colors[i];

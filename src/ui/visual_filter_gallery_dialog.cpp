@@ -741,7 +741,7 @@ VisualFilterGalleryResult request_visual_filter_gallery(
               ? QObject::tr("Apply this saved Look")
               : QObject::tr(
                     "This Look uses filters or settings that this version of "
-                    "Patchy cannot apply."),
+                    "PhotoProject cannot apply."),
           Qt::ToolTipRole);
       if (auto* model =
               qobject_cast<QStandardItemModel*>(saved_looks_combo->model());

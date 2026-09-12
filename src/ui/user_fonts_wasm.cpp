@@ -77,7 +77,7 @@ EM_JS(void, patchy_js_user_font_put, (const char* name, const std::uint8_t* data
   if (!window.indexedDB) {
     return;
   }
-  const warn = (err) => console.warn("Patchy user fonts: could not save", fontName, err);
+  const warn = (err) => console.warn("PhotoProject user fonts: could not save", fontName, err);
   try {
     const open = indexedDB.open("PatchyUserFonts", 1);
     open.onupgradeneeded = () => { open.result.createObjectStore("fonts", {keyPath : "name"}); };

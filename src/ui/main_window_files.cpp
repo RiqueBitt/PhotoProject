@@ -739,16 +739,16 @@ QString unsupported_blend_if_import_notice(const Document& document) {
     return {};
   }
   if (counts.group_boundaries == 0U) {
-    return QObject::tr("Patchy preserved unsupported Photoshop Blend If payloads but does not render or edit them "
+    return QObject::tr("PhotoProject preserved unsupported Photoshop Blend If payloads but does not render or edit them "
                        "(%1 layer(s)).")
         .arg(counts.layer_payloads);
   }
   if (counts.layer_payloads == 0U) {
-    return QObject::tr("Patchy preserved Blend If data on Photoshop group-boundary records but does not render or "
+    return QObject::tr("PhotoProject preserved Blend If data on Photoshop group-boundary records but does not render or "
                        "edit it (%1 group(s)).")
         .arg(counts.group_boundaries);
   }
-  return QObject::tr("Patchy preserved unsupported Photoshop Blend If data without rendering it (%1 layer "
+  return QObject::tr("PhotoProject preserved unsupported Photoshop Blend If data without rendering it (%1 layer "
                      "payload(s), %2 group-boundary record(s)).")
       .arg(counts.layer_payloads)
       .arg(counts.group_boundaries);
@@ -1072,7 +1072,7 @@ void show_open_failed_message_box(QWidget* parent, const QString& error_text) {
     dialog.setDefaultButton(download_button);
     exec_dialog(dialog);
     if (dialog.clickedButton() == download_button) {
-      QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/SethRobinson/Patchy#download")));
+      QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/SethRobinson/PhotoProject#download")));
     }
     return;
   }
@@ -1094,7 +1094,7 @@ void show_open_failed_message_box(QWidget* parent, const QString& error_text) {
   if (error_text.startsWith(browser_decode_marker)) {
     show_critical_message(
         parent, QObject::tr("Open failed"),
-        QObject::tr("Patchy could not decode this HEIC image. The file may be damaged or use "
+        QObject::tr("PhotoProject could not decode this HEIC image. The file may be damaged or use "
                     "a profile this browser does not support."),
         QStringLiteral("openFailedMessageBox"));
     return;
@@ -2793,12 +2793,12 @@ bool MainWindow::confirm_flatten_layers_for_save(const QString& extension) {
   const auto message =
       extension == QStringLiteral("svg")
           ? tr("SVG keeps shape layers as vectors, but masks, layer styles, text, and adjustments are "
-               "baked into images, so Patchy will save a copy. The open document will keep its layers "
+               "baked into images, so PhotoProject will save a copy. The open document will keep its layers "
                "and unsaved changes. To keep everything editable, save as a Photoshop document (.psd) "
                "instead.")
       : linked_external_child
           ? tr("This file format cannot store layers. Continue saving and flatten the linked file?")
-          : tr("This file format cannot store layers, so Patchy will save a flattened copy. The open "
+          : tr("This file format cannot store layers, so PhotoProject will save a flattened copy. The open "
                "document will keep its layers and unsaved changes. To keep layers in the file, save as a "
                "Photoshop document (.psd) instead.");
   const auto answer =
@@ -2835,11 +2835,11 @@ std::optional<bool> MainWindow::resolve_pdf_layer_choice(bool for_export, bool a
   box.setText(tr("How should this document's layers be written to the PDF?"));
   box.setInformativeText(
       tr("Keep layers editable: shape layers become paths, text stays real text, and pixel layers "
-         "become images, so the PDF opens as separate pieces in Patchy and other editors. Blend modes, "
+         "become images, so the PDF opens as separate pieces in PhotoProject and other editors. Blend modes, "
          "adjustment layers, group opacity, layer styles, and pixel masks are flattened into images "
          "where needed, so the page may not look exactly like the canvas.\n\n"
          "Flatten to one image: the page looks exactly like the canvas.\n\n"
-         "Either way Patchy writes a copy; the open document keeps its layers and unsaved changes. "
+         "Either way PhotoProject writes a copy; the open document keeps its layers and unsaved changes. "
          "Preferences > Saving layered documents as PDF sets a default that skips this question."));
   auto* editable_button = box.addButton(tr("Keep Layers Editable"), QMessageBox::AcceptRole);
   auto* flatten_button = box.addButton(tr("Flatten to One Image"), QMessageBox::AcceptRole);

@@ -597,11 +597,11 @@ void MainWindow::show_preferences() {
   connect(remove_fonts_button, &QPushButton::clicked, &dialog, [&dialog] {
     QMessageBox confirm(QMessageBox::Question, tr("Remove Added Fonts"),
 #ifdef Q_OS_WASM
-                        tr("Remove all fonts you added to Patchy? They stay usable until you "
+                        tr("Remove all fonts you added to PhotoProject? They stay usable until you "
                            "reload the page."),
 #else
-                        tr("Remove all fonts you added to Patchy? They stay usable until you "
-                           "restart Patchy."),
+                        tr("Remove all fonts you added to PhotoProject? They stay usable until you "
+                           "restart PhotoProject."),
 #endif
                         QMessageBox::NoButton, &dialog);
     confirm.setObjectName(QStringLiteral("preferencesRemoveUserFontsConfirm"));
@@ -1085,7 +1085,7 @@ void MainWindow::show_preferences() {
 #ifdef Q_OS_WASM
                                tr("Reload the page for the new interface scale to take effect."),
 #else
-                               tr("Restart Patchy for the new interface scale to take effect."),
+                               tr("Restart PhotoProject for the new interface scale to take effect."),
 #endif
                                QStringLiteral("preferencesInterfaceScaleMessageBox"));
     }

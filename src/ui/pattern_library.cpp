@@ -86,7 +86,7 @@ using presets::utf8_from_qstring;
 }  // namespace
 
 QString default_patterns_folder_name() {
-  return QObject::tr("Patchy Defaults");
+  return QObject::tr("PhotoProject Defaults");
 }
 
 QString photo_patterns_folder_name() {

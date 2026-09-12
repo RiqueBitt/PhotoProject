@@ -17,11 +17,11 @@ QSettings app_settings() {
   // IniFormat would resolve to a real .ini in MEMFS, which is recreated empty on
   // every page load. The localStorage backend is synchronous (empty flush()) and
   // survives reloads, which is what makes preferences persist in the browser.
-  return QSettings(QSettings::WebLocalStorageFormat, QSettings::UserScope, QStringLiteral("Patchy"),
-                   QStringLiteral("Patchy"));
+  return QSettings(QSettings::WebLocalStorageFormat, QSettings::UserScope, QStringLiteral("PhotoProject"),
+                   QStringLiteral("PhotoProject"));
 #else
-  return QSettings(QSettings::IniFormat, QSettings::UserScope, QStringLiteral("Patchy"),
-                   QStringLiteral("Patchy"));
+  return QSettings(QSettings::IniFormat, QSettings::UserScope, QStringLiteral("PhotoProject"),
+                   QStringLiteral("PhotoProject"));
 #endif
 }
 

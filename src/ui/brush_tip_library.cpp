@@ -192,7 +192,7 @@ QString abr_import_summary(int imported, const QStringList& warnings) {
   }
   if (static_texture_depth > 0) {
     text += QLatin1Char('\n') +
-            QObject::tr("%n brush(es) use input-driven texture depth; Patchy imported a static depth instead.",
+            QObject::tr("%n brush(es) use input-driven texture depth; PhotoProject imported a static depth instead.",
                         nullptr, static_texture_depth);
   }
   return text;

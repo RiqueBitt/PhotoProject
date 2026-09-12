@@ -431,9 +431,9 @@ QString report_to_text(const StressReport& report) {
   QString text;
   QTextStream out(&text);
   const auto line = QString(88, QLatin1Char('-'));
-  out << "Patchy Stress Test Report\n";
+  out << "PhotoProject Stress Test Report\n";
   out << "=========================\n";
-  out << "Patchy " << report.app_version << " (" << report.build_type << ")  Qt " << report.qt_version << "  |  "
+  out << "PhotoProject " << report.app_version << " (" << report.build_type << ")  Qt " << report.qt_version << "  |  "
       << report.started_utc.toString(QStringLiteral("yyyy-MM-dd HH:mm:ss")) << " UTC\n";
   out << report.cpu_name << ", " << report.logical_cores << " threads, "
       << (report.ram_mb >= 0 ? QStringLiteral("%1 GB RAM").arg((report.ram_mb + 512) / 1024)

@@ -34,7 +34,7 @@ const ThemePalette& dark_palette() {
       .window_bg = rgb(0x262626),
       .window_border = rgb(0x1f1f1f),
       .text_primary = rgb(0xe6e6e6),
-      .script_accent = rgb(0x6fb1e8),
+      .script_accent = rgb(0xb06fe8),
       .script_card_border = rgb(0x626872),
       .script_card_bg = rgb(0x24272d),
       .script_card_title = rgb(0xf2f4f6),
@@ -75,8 +75,8 @@ const ThemePalette& dark_palette() {
       .toolbar_border = rgb(0x292929),
       .button_hover_bg = rgb(0x4a4a4a),
       .button_hover_border = rgb(0x696969),
-      .accent_pressed_bg = rgb(0x2f75bd),
-      .accent_border_bright = rgb(0x6bb3ff),
+      .accent_pressed_bg = rgb(0x832fbd),
+      .accent_border_bright = rgb(0xc36bff),
 
       // Custom window chrome.
       .window_chrome_hover_bg = rgb(0x626262),
@@ -98,16 +98,16 @@ const ThemePalette& dark_palette() {
       .field_inset_border = rgb(0x171717),
       .field_bevel_top = rgb(0x5d5d5d),
       .options_button_bg = rgb(0x303030),
-      .accent_checked_bg = rgb(0x1667b7),
-      .accent_checked_border = rgb(0x63adff),
+      .accent_checked_bg = rgb(0x7316b7),
+      .accent_checked_border = rgb(0xc263ff),
 
       // Check boxes and sliders.
       .checkbox_compact_bg = rgb(0x1f1f1f),
       .checkbox_compact_border = rgb(0x777777),
       .checkbox_indicator_bg = rgb(0x4a4a4a),
       .checkbox_indicator_border = rgb(0x8a8a8a),
-      .checkbox_accent_border = rgb(0x9ccfff),
-      .accent = rgb(0x1473e6),
+      .checkbox_accent_border = rgb(0xd49cff),
+      .accent = rgb(0x9914e6),
       .slider_groove_bg = rgb(0x1c1c1c),
       .slider_groove_border = rgb(0x555555),
       .slider_fill_border = rgb(0x5aa9ff),
@@ -178,10 +178,10 @@ const ThemePalette& dark_palette() {
       .layer_clip_badge = rgb(0x96cdff),
 
       // Bright accent.
-      .accent_bright = rgb(0x31a8ff),
-      .accent_bright_hover = rgb(0x5cbcff),
-      .accent_bright_border = rgb(0x6cc4ff),
-      .text_on_accent_bright = rgb(0x0d1420),
+      .accent_bright = rgb(0x9931ff),
+      .accent_bright_hover = rgb(0xad5cff),
+      .accent_bright_border = rgb(0xb36cff),
+      .text_on_accent_bright = rgb(0x1b0d20),
 
       // Push buttons.
       .button_bg = rgb(0x3a3a3a),
@@ -216,7 +216,7 @@ const ThemePalette& dark_palette() {
       .list_row_hover_bg = rgb(0x33373d),
       .preview_pane_bg = rgb(0x252525),
       .preview_pane_muted_text = rgb(0x9a9a9a),
-      .accent_control = rgb(0x4c9aff),
+      .accent_control = rgb(0xc04cff),
 
       // Tabs.
       .tab_bg = rgb(0x2b2b2b),
@@ -387,9 +387,9 @@ const ThemePalette& dark_palette() {
 
       // Icon ink.
       .icon_ink = rgb(0xdce2eb),
-      .icon_accent = rgb(0x74c0ff),
-      .icon_accent_soft = rgb(0xb8dcff),
-      .icon_accent_tint = rgb(0xacd8ff),
+      .icon_accent = rgb(0xbf74ff),
+      .icon_accent_soft = rgb(0xe1b8ff),
+      .icon_accent_tint = rgb(0xdaacff),
       .icon_danger = rgb(0xff9696),
       .icon_warning = rgb(0xffc078),
       .icon_folder = rgb(0xf5cd69),
@@ -524,7 +524,7 @@ const ThemePalette& light_palette() {
 
     // Brand and state colors carry meaning, so they hold their hue rather than
     // being pushed to a mid tone. The blue accent already reads on both.
-    light.accent = rgb(0x1473e6);
+    light.accent = rgb(0x9914e6);
     light.window_close_hover_bg = rgb(0xc42b1c);
     light.window_close_pressed_bg = rgb(0x9f2117);
 
@@ -586,7 +586,7 @@ const ThemePalette& light_palette() {
     // lightened selection with white text on it is illegible.
     light.menu_item_selected_bg = rgb(0x2f6fb5);
     light.category_selected_bg = rgb(0x2f6fb5);
-    light.accent_checked_bg = rgb(0x1667b7);
+    light.accent_checked_bg = rgb(0x7316b7);
     light.splash_primary_bg = rgb(0x2f7fc1);
 
     // White-on-accent text stays white, because of the four roles above. Text on
@@ -651,9 +651,9 @@ const ThemePalette& light_palette() {
     // Icon ink. The flip lands close, but these are the most-looked-at pixels in
     // the app and deserve exact values.
     light.icon_ink = rgb(0x333a42);
-    light.icon_accent = rgb(0x1668c4);
-    light.icon_accent_soft = rgb(0x5f9fe0);
-    light.icon_accent_tint = rgb(0x5f9fe0);
+    light.icon_accent = rgb(0x8116c4);
+    light.icon_accent_soft = rgb(0xab5fe0);
+    light.icon_accent_tint = rgb(0xab5fe0);
     light.icon_danger = rgb(0xc0392b);
     light.icon_warning = rgb(0xb96a12);
     light.icon_folder = rgb(0xb98600);

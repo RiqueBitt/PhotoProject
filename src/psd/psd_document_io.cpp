@@ -263,7 +263,7 @@ void append_smart_object_notices(const SmartObjectImportCounts& counts, std::vec
     notices->push_back(std::to_string(counts.preview_locked) + " smart object layer" +
                        plural(counts.preview_locked) +
                        " use warp, perspective, smart filters, or unsupported data; Photoshop's preview is "
-                       "shown (rasterize the layer to edit it in Patchy).");
+                       "shown (rasterize the layer to edit it in PhotoProject).");
   }
   if (counts.external > 0) {
     notices->push_back(std::to_string(counts.external) + " smart object layer" + plural(counts.external) +
@@ -893,7 +893,7 @@ std::vector<Layer> read_layer_info_records(BigEndianReader& layer_reader, std::i
   if (unrendered_color_balance_count > 0 && notices != nullptr) {
     notices->push_back(std::to_string(unrendered_color_balance_count) + " Color Balance layer" +
                        (unrendered_color_balance_count == 1 ? " carries" : "s carry") +
-                       " shadow/highlight or preserve-luminosity settings that Patchy preserves but does "
+                       " shadow/highlight or preserve-luminosity settings that PhotoProject preserves but does "
                        "not render.");
   }
   return build_group_hierarchy(std::move(decoded_layers));

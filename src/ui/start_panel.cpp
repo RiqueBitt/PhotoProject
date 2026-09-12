@@ -151,7 +151,7 @@ StartPanel::StartPanel(QWidget* parent) : QWidget(parent) {
   header_row->addWidget(artwork);
   auto* header_text = new QVBoxLayout();
   header_text->setSpacing(4);
-  auto* title = new QLabel(tr("Patchy Image Editor"), column);
+  auto* title = new QLabel(tr("PhotoProject Image Editor"), column);
   title->setObjectName(QStringLiteral("startPanelTitle"));
   auto* tagline = new QLabel(tr("Open source photo editing. Free forever, no subscriptions."), column);
   tagline->setObjectName(QStringLiteral("startPanelTagline"));
@@ -233,7 +233,7 @@ StartPanel::StartPanel(QWidget* parent) : QWidget(parent) {
   wasm_note->setTextInteractionFlags(Qt::TextBrowserInteraction);
   wasm_note->setOpenExternalLinks(true);
   const auto desktop_link = QStringLiteral("<a style=\"color:@link_text; text-decoration:none;\" "
-                                           "href=\"https://github.com/SethRobinson/Patchy#download\">%1</a>")
+                                           "href=\"https://github.com/SethRobinson/PhotoProject#download\">%1</a>")
                                 .arg(tr("desktop version"));
   set_themed_label_text(*wasm_note,
                         tr("Everything runs locally in your browser. Nothing you make is ever sent online.") +
@@ -281,7 +281,14 @@ StartPanel::StartPanel(QWidget* parent) : QWidget(parent) {
 
   // Item pedido: "remova completamente a conectividade a esse outro
   // app" — removidos os links clicáveis pro GitHub/site do projeto
-  // original de onde este app foi baseado.
+  // original de onde este app foi baseado. Item pedido (revisão
+  // posterior): "com a cara do Project Club" — texto simples (sem link
+  // externo, sem nenhuma conexão de rede) identificando o app como
+  // parte do Project Club.
+  auto* project_club_credit = new QLabel(tr("Part of Project Club"), this);
+  project_club_credit->setObjectName(QStringLiteral("startPanelProjectClubCredit"));
+  project_club_credit->setTextFormat(Qt::PlainText);
+  add_footer_row({project_club_credit});
 
   update_status_label_ = new QLabel(this);
   update_status_label_->setObjectName(QStringLiteral("startPanelUpdateStatus"));

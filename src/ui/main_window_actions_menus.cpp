@@ -1658,7 +1658,7 @@ void MainWindow::build_menu_bar_actions(ActionBuildContext& ctx) {
   ai_setup_action->setVisible(false);
 #endif
 
-  auto* about_action = help_menu->addAction(tr("&About Patchy"));
+  auto* about_action = help_menu->addAction(tr("&About PhotoProject"));
   about_action->setMenuRole(QAction::AboutRole);
   connect(about_action, &QAction::triggered, this, [this] { show_about(); });
 

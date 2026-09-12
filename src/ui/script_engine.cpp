@@ -1253,7 +1253,7 @@ void ScriptEngineHost::wait_while_paused() {
 
 void ScriptEngineHost::set_slow_mode(bool enabled) {
   if (enabled && !slow_mode_available()) {
-    throw_js_error(tr("Slow mode requires a visible Patchy workspace."));
+    throw_js_error(tr("Slow mode requires a visible PhotoProject workspace."));
     return;
   }
   if (slow_mode_ == enabled) { return; }

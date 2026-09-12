@@ -2029,7 +2029,7 @@ void apply_layer_effects(LayerBuildContext& ctx, const af::AfClass& node, Layer&
         // renders the children as if the group did not exist at all.
         group.set_blend_mode(BlendMode::Normal);
         ctx.notices.push_back("Layer '" + group.name() +
-                              "': blend mode not supported by Patchy; shown as Normal");
+                              "': blend mode not supported by PhotoProject; shown as Normal");
       }
     }
   }
@@ -2139,7 +2139,7 @@ void apply_common(LayerBuildContext& ctx, const af::AfClass& node, Layer& layer,
         // list once the rasterized alpha exists and owns every Erase notice.
       } else {
         ctx.notices.push_back("Layer '" + name +
-                              "': blend mode not supported by Patchy; shown as Normal");
+                              "': blend mode not supported by PhotoProject; shown as Normal");
       }
     }
   }
@@ -4198,7 +4198,7 @@ void append_rect_corner(PathSubpath& subpath, double px, double py, double enter
     const auto left_style = enum_field_id(*shape, af::tag4("LSty"), 1);
     const auto right_style = enum_field_id(*shape, af::tag4("RSty"), 1);
     if (left_style > 1 || right_style > 1) {
-      *why = "uses an Affinity arrow end style Patchy does not model";
+      *why = "uses an Affinity arrow end style PhotoProject does not model";
       return std::nullopt;
     }
     const double thick = std::clamp(shape->double_field(af::tag4("Thck"), 0.35), 0.0, 1.0);
@@ -4466,7 +4466,7 @@ void append_rect_corner(PathSubpath& subpath, double px, double py, double enter
     // centered), base along the bottom of the box.
     for (const auto& field : shape->fields) {
       if (field.tag != af::tag4("Pos ")) {
-        *why = "is an Affinity triangle variant Patchy does not model";
+        *why = "is an Affinity triangle variant PhotoProject does not model";
         return std::nullopt;
       }
     }
@@ -4476,7 +4476,7 @@ void append_rect_corner(PathSubpath& subpath, double px, double py, double enter
     subpath.anchors.push_back(PathAnchor{x1, y1, x1, y1, x1, y1, false});
     subpath.anchors.push_back(PathAnchor{x0, y1, x0, y1, x0, y1, false});
   } else {
-    *why = "is an Affinity shape kind Patchy does not model";
+    *why = "is an Affinity shape kind PhotoProject does not model";
     return std::nullopt;
   }
 
@@ -5208,7 +5208,7 @@ void build_layers(LayerBuildContext& ctx, const std::vector<std::shared_ptr<af::
         emit_vector_base_with_children(std::move(*shape_layer));
         continue;
       }
-      emit_placeholder(why.empty() ? "is an Affinity shape kind Patchy does not model" : why);
+      emit_placeholder(why.empty() ? "is an Affinity shape kind PhotoProject does not model" : why);
       emit_clipped_children(&node, /*base_is_placeholder=*/true);
       continue;
     }
@@ -5747,7 +5747,7 @@ void bake_pending_blur_effects(std::vector<Layer>& layers, std::vector<std::stri
   const Container container = parse_container(bytes);
   if (container.version > kNewestVerifiedContainerVersion) {
     notices.push_back("This file was saved by a newer Affinity (container version " +
-                      std::to_string(container.version) + "; Patchy has been verified up to " +
+                      std::to_string(container.version) + "; PhotoProject has been verified up to " +
                       std::to_string(kNewestVerifiedContainerVersion) +
                       "); the layer import may be incomplete");
   }

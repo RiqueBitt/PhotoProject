@@ -291,7 +291,7 @@ EncodedLayer encode_layer(const Layer& layer, bool large_document) {
 
 EncodedLayer encode_adjustment_layer(const Layer& layer, bool large_document) {
   if (layer.kind() != LayerKind::Adjustment || !adjustment_settings_from_layer(layer).has_value()) {
-    throw std::runtime_error("Adjustment layer is missing Patchy adjustment settings");
+    throw std::runtime_error("Adjustment layer is missing PhotoProject adjustment settings");
   }
 
   EncodedLayer encoded;

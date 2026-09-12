@@ -114,7 +114,7 @@ QString single_instance_server_name() {
   if (user.isEmpty()) {
     user = qEnvironmentVariable("USER");
   }
-  const auto name = QStringLiteral("Patchy-SingleInstance-") + user;
+  const auto name = QStringLiteral("PhotoProject-SingleInstance-") + user;
 #ifdef Q_OS_LINUX
   // Inside Flatpak, QLocalServer's default socket location is the per-sandbox /tmp, so a
   // second `flatpak run` would never find the first instance's socket. $XDG_RUNTIME_DIR/
@@ -377,11 +377,11 @@ int main(int argc, char* argv[]) {
 #endif
   // Slider grooves snap to the click; tool flyouts open on a short hold (see the style above).
   app.setStyle(new InteractionHintsStyle);
-  app.setApplicationName(QStringLiteral("Patchy"));
+  app.setApplicationName(QStringLiteral("PhotoProject"));
   app.setApplicationVersion(QStringLiteral(PATCHY_VERSION));
-  // Keep the internal app identity for settings without letting Qt append " - Patchy" to every native window title.
+  // Keep the internal app identity for settings without letting Qt append " - PhotoProject" to every native window title.
   app.setApplicationDisplayName(QString());
-  app.setOrganizationName(QStringLiteral("Seth A. Robinson"));
+  app.setOrganizationName(QStringLiteral("Project Club"));
   app.setWindowIcon(patchy::ui::patchy_app_icon());
   // Qt 6 caps every image decode at 256 MB and fails bigger ones with a bare
   // "Unable to read image data" (a large-bed flatbed scan at 600 DPI is
@@ -411,7 +411,7 @@ int main(int argc, char* argv[]) {
   // Parse command-line arguments after translations load so option descriptions are localized.
   QCommandLineParser parser;
   parser.setApplicationDescription(
-      QCoreApplication::translate("QObject", "Patchy raster image editor."));
+      QCoreApplication::translate("QObject", "PhotoProject raster image editor."));
   parser.addHelpOption();
   parser.addVersionOption();
   parser.addPositionalArgument(QStringLiteral("files"),
@@ -441,7 +441,7 @@ int main(int argc, char* argv[]) {
   QCommandLineOption screenshot_option(
       QStringLiteral("screenshot"),
       QCoreApplication::translate(
-          "QObject", "Save a PNG of the Patchy window to <path>. With a running instance this forwards "
+          "QObject", "Save a PNG of the PhotoProject window to <path>. With a running instance this forwards "
                      "the request and exits; otherwise the new instance captures after startup and exits."),
       QStringLiteral("path"));
   parser.addOption(screenshot_option);
@@ -466,7 +466,7 @@ int main(int argc, char* argv[]) {
       QStringLiteral("append-text"),
       QCoreApplication::translate(
           "QObject", "With --export: append this text to every text layer, re-rendering each through "
-                     "Patchy's text engine, before saving."),
+                     "PhotoProject's text engine, before saving."),
       QStringLiteral("text"));
   parser.addOption(append_text_option);
   QCommandLineOption run_script_option(
@@ -752,7 +752,7 @@ int main(int argc, char* argv[]) {
   if (!headless_mode && !screenshot_mode) {
     mcp_attachment = std::make_unique<patchy::ui::McpAttachment>(window);
     if (!mcp_attachment->error().isEmpty()) {
-      qWarning("Patchy MCP attachment: %s", qPrintable(mcp_attachment->error()));
+      qWarning("PhotoProject MCP attachment: %s", qPrintable(mcp_attachment->error()));
     }
   }
 #endif

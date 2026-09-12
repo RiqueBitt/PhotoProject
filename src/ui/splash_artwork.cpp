@@ -1,10 +1,9 @@
 #include "ui/splash_artwork.hpp"
 
 #include <QColor>
-#include <QLinearGradient>
 #include <QPainter>
-#include <QPainterPath>
 #include <QPaintEvent>
+#include <QPixmap>
 
 #include <algorithm>
 
@@ -26,52 +25,31 @@ void SplashArtwork::paintEvent(QPaintEvent* event) {
 
   QPainter painter(this);
   painter.setRenderHint(QPainter::Antialiasing);
+  painter.setRenderHint(QPainter::SmoothPixmapTransform);
 
   const qreal scale = std::min(width() / qreal(kLogicalWidth), height() / qreal(kLogicalHeight));
   painter.translate((width() - kLogicalWidth * scale) / 2.0, (height() - kLogicalHeight * scale) / 2.0);
   painter.scale(scale, scale);
 
+  // Item pedido: "com a cara do Project Club" — troca o cartão desenhado à
+  // mão (um "remendo" estilizado, referência ao nome "Patchy") pelo logo
+  // "PC" real do Project Club, no mesmo estilo visual usado no ícone do
+  // app (fundo escuro arredondado, logo em destaque). O card em volta
+  // (mesma forma/tamanho de antes) mantém a moldura consistente com o
+  // resto da tela "Sobre"/tela inicial.
   const QRectF bounds = QRectF(0, 0, kLogicalWidth, kLogicalHeight).adjusted(10, 14, -10, -14);
-  QLinearGradient glow(bounds.topLeft(), bounds.bottomRight());
-  glow.setColorAt(0.0, QColor(88, 170, 235));
-  glow.setColorAt(0.58, QColor(132, 214, 169));
-  glow.setColorAt(1.0, QColor(242, 177, 92));
   painter.setPen(Qt::NoPen);
-  painter.setBrush(glow);
+  painter.setBrush(QColor(18, 18, 22));
   painter.drawRoundedRect(bounds, 28, 28);
 
-  painter.setBrush(QColor(22, 29, 39, 230));
-  painter.drawRoundedRect(bounds.adjusted(9, 9, -9, -9), 22, 22);
-
-  const QRectF canvas(bounds.left() + 34, bounds.top() + 30, bounds.width() - 68, bounds.height() - 74);
-  painter.setPen(QPen(QColor(231, 237, 245), 3));
-  painter.setBrush(QColor(247, 249, 252));
-  painter.drawRoundedRect(canvas, 16, 16);
-
-  const QRectF patch_a(canvas.left() + 20, canvas.top() + 20, 54, 46);
-  painter.setPen(Qt::NoPen);
-  painter.setBrush(QColor(88, 170, 235));
-  painter.drawRoundedRect(patch_a, 11, 11);
-
-  const QRectF patch_b(canvas.right() - 76, canvas.center().y() - 18, 58, 50);
-  painter.setBrush(QColor(132, 214, 169));
-  painter.drawRoundedRect(patch_b, 12, 12);
-
-  QPainterPath cut;
-  cut.moveTo(canvas.left() + 38, canvas.bottom() - 46);
-  cut.lineTo(canvas.left() + 78, canvas.bottom() - 70);
-  cut.lineTo(canvas.left() + 122, canvas.bottom() - 38);
-  cut.lineTo(canvas.left() + 84, canvas.bottom() - 18);
-  cut.closeSubpath();
-  painter.setBrush(QColor(242, 177, 92));
-  painter.drawPath(cut);
-
-  painter.setPen(QPen(QColor(24, 31, 42), 5, Qt::SolidLine, Qt::RoundCap));
-  painter.drawLine(QPointF(canvas.left() + 36, canvas.bottom() + 14),
-                   QPointF(canvas.right() - 18, canvas.bottom() + 14));
-  painter.setPen(QPen(QColor(232, 238, 246), 3, Qt::SolidLine, Qt::RoundCap));
-  painter.drawLine(QPointF(canvas.left() + 44, canvas.bottom() + 14),
-                   QPointF(canvas.right() - 26, canvas.bottom() + 14));
+  static const QPixmap logo(QStringLiteral(":/patchy/icons/app-logo.png"));
+  if (!logo.isNull()) {
+    const QRectF logo_rect = bounds.adjusted(28, 28, -28, -28);
+    const QPixmap scaled_logo = logo.scaled(logo_rect.size().toSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    const QPointF logo_pos(logo_rect.left() + (logo_rect.width() - scaled_logo.width()) / 2.0,
+                           logo_rect.top() + (logo_rect.height() - scaled_logo.height()) / 2.0);
+    painter.drawPixmap(logo_pos, scaled_logo);
+  }
 }
 
 }  // namespace patchy::ui

@@ -298,7 +298,7 @@ public:
       filetype = "JPEG";
     } else if (image.codec != FilterKind::None) {
       unmodelled_ = true;
-      notice("A PDF image used a codec Patchy cannot import and was skipped.");
+      notice("A PDF image used a codec PhotoProject cannot import and was skipped.");
       return;
     } else {
       bytes = formats::encode_png_rgba8(image.rgba, image.width, image.height);
@@ -530,7 +530,7 @@ VectorReadResult read_page_as_vectors(std::span<const std::uint8_t> bytes, const
   result.has_unmodelled_content = sink.has_unmodelled_content();
 
   if (result.document.layers().empty()) {
-    throw std::runtime_error("This PDF page holds no artwork Patchy could import as shapes or text.");
+    throw std::runtime_error("This PDF page holds no artwork PhotoProject could import as shapes or text.");
   }
   if (const auto default_layer = default_non_group_layer_id(result.document.layers()); default_layer.has_value()) {
     result.document.set_active_layer(*default_layer);

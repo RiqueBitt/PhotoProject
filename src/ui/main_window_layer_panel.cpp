@@ -816,7 +816,7 @@ QString text_layer_summary(const Layer& layer, const Document& document) {
   if (value(kLayerMetadataTextItalic) == QStringLiteral("true")) {
     style << QObject::tr("italic");
   }
-  QString source = QObject::tr("Source: Patchy text");
+  QString source = QObject::tr("Source: PhotoProject text");
   if (!source_block.isEmpty()) {
     source = QObject::tr("Source: PSD %1").arg(source_block);
   }
@@ -1675,7 +1675,7 @@ QWidget* make_layer_row_widget(const Layer& layer, QListWidgetItem* item, QWidge
             ? QObject::tr(
               "This Smart Object is preview-locked. Its Smart Filters are preserved unchanged.")
             : QObject::tr(
-              "This Smart Filter stack contains unsupported Photoshop data. Patchy preserves it unchanged, so the "
+              "This Smart Filter stack contains unsupported Photoshop data. PhotoProject preserves it unchanged, so the "
               "controls are disabled.");
     const auto button_style = QStringLiteral(
         "QToolButton { background: transparent; border: 1px solid transparent; border-radius: 3px; padding: 0; "

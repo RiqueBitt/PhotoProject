@@ -132,7 +132,7 @@ DecodeResult inflate_bytes(std::span<const std::uint8_t> data) {
       if (out_bytes > 0) {
         if (out.size() + out_bytes > kMaximumDecodedBytes) {
           result.data = std::move(out);
-          result.error = "a Flate stream decoded to more data than Patchy will hold";
+          result.error = "a Flate stream decoded to more data than PhotoProject will hold";
           return result;
         }
         out.insert(out.end(), window.data() + window_position, window.data() + window_position + out_bytes);
@@ -228,7 +228,7 @@ DecodeResult decode_lzw(std::span<const std::uint8_t> data, bool early_change) {
         return result;
       }
       if (!emit(code)) {
-        result.error = "an LZW stream decoded to more data than Patchy will hold";
+        result.error = "an LZW stream decoded to more data than PhotoProject will hold";
         return result;
       }
       previous = code;
@@ -303,7 +303,7 @@ DecodeResult decode_ascii85(std::span<const std::uint8_t> data) {
     group = 0;
     count = 0;
     if (result.data.size() > kMaximumDecodedBytes) {
-      result.error = "an ASCII85 stream decoded to more data than Patchy will hold";
+      result.error = "an ASCII85 stream decoded to more data than PhotoProject will hold";
       return result;
     }
   }

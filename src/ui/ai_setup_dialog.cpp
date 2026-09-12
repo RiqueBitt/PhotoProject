@@ -33,7 +33,7 @@ AiSetupDialog::AiSetupDialog(const AiControlPaths& paths, QWidget* parent)
 
   auto* intro = new QLabel(
       tr("First, copy the setup prompt into your AI assistant (Claude Code, Codex, Cursor, "
-         "or another tool that supports MCP). You only need to set up Patchy once. "
+         "or another tool that supports MCP). You only need to set up PhotoProject once. "
          "The setup prompt is in English because it is written for the assistant."),
       this);
   intro->setObjectName(QStringLiteral("aiSetupIntroLabel"));
@@ -78,30 +78,30 @@ AiSetupDialog::AiSetupDialog(const AiControlPaths& paths, QWidget* parent)
   examples->setObjectName(QStringLiteral("aiSetupExamplesComboBox"));
   examples->setAccessibleName(tr("Example prompts"));
   examples->addItem(tr("Fix the face in my open document"),
-      tr("Edit the document I have open in Patchy. Make the face cuter on a separate "
+      tr("Edit the document I have open in PhotoProject. Make the face cuter on a separate "
          "correction layer, keep the other layers, and show me a before-and-after preview."));
   examples->addItem(tr("Create pixel art while I watch"),
-      tr("Create a cute 64x64 pixel-art animal in a visible Patchy window so I can watch. "
+      tr("Create a cute 64x64 pixel-art animal in a visible PhotoProject window so I can watch. "
          "Use editable layers, inspect the preview and refine it, then save a layered PSD "
          "and a 64x64 PNG."));
   examples->addItem(tr("Make icons in the background"),
-      tr("Use Patchy in the background, without opening a window, to create three matching "
+      tr("Use PhotoProject in the background, without opening a window, to create three matching "
          "32x32 app icons: a folder, a paintbrush, and a heart. Give them transparent "
          "backgrounds and show me the previews and saved PNG files."));
   examples->addItem(tr("Turn a reference image into artwork"),
-      tr("Use the image I attach as a reference for a cute 64x64 portrait in Patchy. "
+      tr("Use the image I attach as a reference for a cute 64x64 portrait in PhotoProject. "
          "Keep its recognizable features, compare your preview with the reference as "
          "you refine it, and save both an editable PSD and a PNG."));
   examples->addItem(tr("Export sizes from my open document"),
-      tr("Use my open Patchy document to export transparent PNG copies at 64x64, 128x128, "
+      tr("Use my open PhotoProject document to export transparent PNG copies at 64x64, 128x128, "
          "and 256x256. Preserve the proportions, leave the original document unchanged, "
          "and show me the exported files."));
   examples->addItem(tr("Make a contact sheet in the background"),
-      tr("Use Patchy in the background to make a labeled contact sheet from a folder of "
+      tr("Use PhotoProject in the background to make a labeled contact sheet from a folder of "
          "images. Ask me which folder if I have not provided one, keep the original "
          "files unchanged, and show me the finished sheet."));
   examples->addItem(tr("Review my open document"),
-      tr("Look at the document I have open in Patchy and suggest three specific "
+      tr("Look at the document I have open in PhotoProject and suggest three specific "
          "improvements to its composition and colors. Show me the preview before "
          "making any edits."));
   content->addWidget(examples);
@@ -142,17 +142,17 @@ AiSetupDialog::AiSetupDialog(const AiControlPaths& paths, QWidget* parent)
                         .arg(QStringLiteral("flatpak run --command=patchy-mcp %1")
                                  .arg(QString::fromLatin1(kFlatpakAppId)));
     status_lines << tr("Skill folder: %1").arg(QString::fromLatin1(kFlatpakSkillDirectory));
-    warnings << tr("Patchy is running inside a Flatpak sandbox; the skill folder is only "
+    warnings << tr("PhotoProject is running inside a Flatpak sandbox; the skill folder is only "
                    "visible from inside it.");
   } else {
     if (paths_.connector_path.isEmpty()) {
-      warnings << tr("The patchy-mcp connector was not found next to Patchy. Reinstall Patchy or "
+      warnings << tr("The patchy-mcp connector was not found next to PhotoProject. Reinstall PhotoProject or "
                      "download a full package.");
     } else {
       status_lines << tr("Connector: %1").arg(QDir::toNativeSeparators(paths_.connector_path));
     }
     if (paths_.skill_directory.isEmpty()) {
-      warnings << tr("The patchy-control skill folder was not found. Reinstall Patchy or "
+      warnings << tr("The patchy-control skill folder was not found. Reinstall PhotoProject or "
                      "download a full package.");
     } else {
       status_lines << tr("Skill folder: %1").arg(QDir::toNativeSeparators(paths_.skill_directory));

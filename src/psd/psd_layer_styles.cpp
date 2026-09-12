@@ -976,7 +976,7 @@ LayerStrokePosition stroke_position_from_value(std::uint8_t value) {
 std::uint16_t read_count(BigEndianReader& reader, const char* field) {
   const auto count = reader.read_u16();
   if (count > kMaxPatchyLayerStyleEntries) {
-    throw std::runtime_error(std::string("Patchy layer style has too many entries: ") + field);
+    throw std::runtime_error(std::string("PhotoProject layer style has too many entries: ") + field);
   }
   return count;
 }

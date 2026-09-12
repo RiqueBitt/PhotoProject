@@ -779,7 +779,7 @@ private:
     const auto space = resolve_color_space(file_.get_any(image_object, "ColorSpace", "CS"), resources);
     placed.rgba = expand_samples(data.data, placed.width, placed.height, bits, space);
     if (placed.rgba.empty()) {
-      notice("A PDF image used a colour format Patchy could not decode and was skipped.");
+      notice("A PDF image used a colour format PhotoProject could not decode and was skipped.");
       return;
     }
     apply_soft_mask(image_object, placed);
@@ -878,7 +878,7 @@ private:
     }
     const auto mask_data = file_.stream_data(mask);
     if (mask_data.image_codec != FilterKind::None || mask_data.data.empty()) {
-      notice("A PDF image's transparency mask used a codec Patchy could not decode; the image imported opaque.");
+      notice("A PDF image's transparency mask used a codec PhotoProject could not decode; the image imported opaque.");
       return;
     }
     const auto bits = static_cast<int>(file_.get(mask, "BitsPerComponent").integer(8));

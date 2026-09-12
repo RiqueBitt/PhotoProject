@@ -22,11 +22,11 @@ std::optional<PdfImportResult> load_pdf_document(const QString&, const PdfImport
     *error = QString::fromUtf8(kPdfDesktopOnlyMarker.data(),
                                static_cast<qsizetype>(kPdfDesktopOnlyMarker.size())) +
              QLatin1Char(' ') +
-             QObject::tr("Only the desktop version of Patchy can import PDF files. "
+             QObject::tr("Only the desktop version of PhotoProject can import PDF files. "
                          "All versions, including this one, can export PDF.");
 #else
     // A desktop Qt installed without the optional Qt PDF add-on.
-    *error = QObject::tr("This build of Patchy cannot open PDF files.");
+    *error = QObject::tr("This build of PhotoProject cannot open PDF files.");
 #endif
   }
   return std::nullopt;

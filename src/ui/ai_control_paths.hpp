@@ -11,7 +11,7 @@
 namespace patchy::ui {
 
 inline constexpr char kAiControlSetupUrl[] =
-    "https://github.com/SethRobinson/Patchy/blob/main/agent-kit/patchy-control/references/setup.md";
+    "https://github.com/SethRobinson/PhotoProject/blob/main/agent-kit/patchy-control/references/setup.md";
 inline constexpr char kFlatpakAppId[] = "com.rtsoft.patchy";
 inline constexpr char kFlatpakSkillDirectory[] = "/app/share/patchy/ai/patchy-control";
 

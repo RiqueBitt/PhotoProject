@@ -402,7 +402,7 @@ FormatReadResult read_rttex(std::span<const std::uint8_t> bytes) {
   FormatReadResult result;
   if (header.mipmap_count > 1) {
     result.notices.push_back("Only the first of " + std::to_string(header.mipmap_count) +
-                             " mip levels was read; Patchy writes a single level");
+                             " mip levels was read; PhotoProject writes a single level");
   }
   // RTPack always records the true size; 0 or a value past the texture means "unpadded".
   if (header.original_width <= 0 || header.original_width > header.width) {

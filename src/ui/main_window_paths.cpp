@@ -881,7 +881,7 @@ void MainWindow::stroke_active_path() {
   // rides the canvas's own pen-input settings, so Simulate Pressure behaves
   // exactly like drawing the path with a real pen.
   static QPointingDevice stroke_pen(
-      QStringLiteral("Patchy stroke-path pen"), 1004, QInputDevice::DeviceType::Stylus,
+      QStringLiteral("PhotoProject stroke-path pen"), 1004, QInputDevice::DeviceType::Stylus,
       QPointingDevice::PointerType::Pen,
       QInputDevice::Capability::Position | QInputDevice::Capability::Pressure, 1, 3);
   for (const auto& polyline : polylines) {

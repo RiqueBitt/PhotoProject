@@ -105,7 +105,7 @@ void File::setup_decryption(std::string_view password, std::vector<std::string>*
 
   if (get(encrypt, "Filter").name() != "Standard") {
     if (notices != nullptr) {
-      notices->push_back("This PDF uses a custom security handler Patchy cannot open.");
+      notices->push_back("This PDF uses a custom security handler PhotoProject cannot open.");
     }
     return;
   }

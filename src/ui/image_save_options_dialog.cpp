@@ -815,7 +815,7 @@ std::optional<ImageSaveOptions> prompt_image_save_options(QWidget* parent, const
     content->addWidget(lossless);
 
     auto* note = new QLabel(
-        QObject::tr("JPEG XR is written by the Windows codec. Patchy saves 8 bits per channel, so a file opened "
+        QObject::tr("JPEG XR is written by the Windows codec. PhotoProject saves 8 bits per channel, so a file opened "
                     "from an HDR capture is written back as the tone mapped image."),
         &dialog);
     note->setObjectName(QStringLiteral("jxrSaveNote"));

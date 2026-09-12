@@ -221,7 +221,7 @@ EM_JS(void, patchy_js_install_drop_target, (), {
         const entry = await globalThis.__patchyStageBrowserFile(file, "/dropped");
         window.__patchyDropQueue.push(entry);
       } catch (error) {
-        console.warn("Patchy file drop failed", error);
+        console.warn("PhotoProject file drop failed", error);
       }
     }
   };

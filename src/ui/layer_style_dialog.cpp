@@ -955,7 +955,7 @@ std::optional<LayerStyleSettings> request_layer_style_settings(
     auto* warning = new QLabel(
         QObject::tr("Photoshop Satin custom contours and contour anti-aliasing "
                     "are preserved until you edit layer "
-                    "styles. Patchy previews and saves edited Satin with the "
+                    "styles. PhotoProject previews and saves edited Satin with the "
                     "non-anti-aliased Linear contour."),
         &dialog);
     warning->setObjectName(QStringLiteral("layerStyleSatinContourWarning"));
@@ -978,7 +978,7 @@ std::optional<LayerStyleSettings> request_layer_style_settings(
     blend_if_unsupported_warning = new QLabel(
         QObject::tr("This layer contains Photoshop Blend If data for an "
                     "unsupported color mode or payload shape. "
-                    "Patchy preserves it unchanged and does not preview it "
+                    "PhotoProject preserves it unchanged and does not preview it "
                     "unless you replace it."),
         warning_row);
     blend_if_unsupported_warning->setObjectName(QStringLiteral("layerStyleBlendIfUnsupportedWarning"));
@@ -1000,7 +1000,7 @@ std::optional<LayerStyleSettings> request_layer_style_settings(
        !blend_if_is_identity(boundary_blend_if.settings))) {
     auto* warning = new QLabel(
         QObject::tr("This folder's closing PSD record contains "
-                               "separate Blend If data. Patchy preserves that "
+                               "separate Blend If data. PhotoProject preserves that "
                                "boundary data unchanged; the controls below "
                                "edit only the visible folder record."),
         &dialog);
@@ -2059,7 +2059,7 @@ std::optional<LayerStyleSettings> request_layer_style_settings(
   const auto channels_tooltip =
       channel_restriction_supported
           ? QObject::tr("An unchecked channel keeps the layers below instead of compositing")
-          : QObject::tr("This layer preserves Photoshop channel restrictions Patchy cannot edit "
+          : QObject::tr("This layer preserves Photoshop channel restrictions PhotoProject cannot edit "
                         "for this file's color mode");
   for (auto* check : {channel_red, channel_green, channel_blue}) {
     check->setToolTip(channels_tooltip);

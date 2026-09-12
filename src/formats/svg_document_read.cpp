@@ -1190,7 +1190,7 @@ struct Importer {
     std::stable_sort(gradient.color_stops.begin(), gradient.color_stops.end(), by_location);
     std::stable_sort(gradient.alpha_stops.begin(), gradient.alpha_stops.end(), by_location);
 
-    // Geometry: map the SVG gradient vector onto Patchy's calibrated model
+    // Geometry: map the SVG gradient vector onto PhotoProject's calibrated model
     // (span = center chord of the aligned bounds; docs/vector-tools.md "GdFl
     // gradient fill geometry"). objectBoundingBox coordinates resolve against
     // the path bounds, userSpaceOnUse against the canvas.
@@ -1257,7 +1257,7 @@ struct Importer {
     }
     const auto spread = lower_ascii(attribute("spreadMethod", "pad"));
     if (spread == "reflect" && gradient.type == LayerStyleGradientType::Linear) {
-      // Patchy's Reflected style mirrors across the center at twice the ramp,
+      // PhotoProject's Reflected style mirrors across the center at twice the ramp,
       // so the SVG vector maps to half of the Reflected span.
       gradient.type = LayerStyleGradientType::Reflected;
       gradient.scale = std::min(10.0F, gradient.scale * 2.0F);
@@ -1483,7 +1483,7 @@ struct Importer {
       return std::nullopt;
     }
     if (node.attribute("data-patchy-stroke-align") != nullptr) {
-      // Patchy's own inside-stroke export trick: the clip IS the shape's
+      // PhotoProject's own inside-stroke export trick: the clip IS the shape's
       // outline, not a real mask. The alignment hint restores the geometry.
       return std::nullopt;
     }
@@ -1744,7 +1744,7 @@ struct Importer {
     stroke.join = style.join;
     stroke.miter_limit = style.stroke_miterlimit;
     stroke.alignment = VectorStrokeAlignment::Center;  // SVG strokes are always centered...
-    // ...except for Patchy's own exports: inside/outside strokes leave at
+    // ...except for PhotoProject's own exports: inside/outside strokes leave at
     // double width with a data-patchy hint carrying the true geometry, so a
     // round trip restores the exact alignment and width.
     if (const auto* align_hint = node.attribute("data-patchy-stroke-align")) {
@@ -1957,7 +1957,7 @@ struct Importer {
 
   // Should a <switch> child be taken? Conditional attributes must all pass;
   // absent attributes pass, requiredExtensions/-Features fail when present
-  // (Patchy implements none), and systemLanguage passes on an English entry.
+  // (PhotoProject implements none), and systemLanguage passes on an English entry.
   static bool switch_child_selectable(const XmlNode& child) {
     if (child.attribute("requiredExtensions") != nullptr || child.attribute("requiredFeatures") != nullptr) {
       return false;
@@ -1969,7 +1969,7 @@ struct Importer {
   }
 
   // Walks one container's children in document order and returns the layers
-  // bottom-to-top (identical to both SVG paint order and Patchy's layers()
+  // bottom-to-top (identical to both SVG paint order and PhotoProject's layers()
   // order, so no reversal happens anywhere).
   std::vector<Layer> import_children(const XmlNode& node, const Style& inherited, const Affine& parent_transform,
                                      int use_depth) {

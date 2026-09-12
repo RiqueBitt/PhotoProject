@@ -115,7 +115,7 @@ void McpActivity::refresh() {
   if (paused) { label_->setText((script_ ? tr("Script paused: %1") : tr("AI paused: %1")).arg(operation_)); }
   if (paused && !ready) { label_->setText((script_ ? tr("Script pausing: %1") : tr("AI pausing: %1")).arg(operation_)); }
   setToolTip(working_ ? tr("%1 is using this workspace. You can browse while it works. Pause to edit; Stop keeps completed changes available for Undo.").arg(client_)
-                     : tr("Connected to %1 through MCP. Waiting for a Patchy request; the assistant may still be thinking.").arg(client_));
+                     : tr("Connected to %1 through MCP. Waiting for a PhotoProject request; the assistant may still be thinking.").arg(client_));
   stop_->setText(tr("Stop"));
   pause_->setText(ready ? tr("Resume") : paused ? tr("Pausing...") : tr("Pause"));
   pause_->setChecked(paused);
@@ -130,7 +130,7 @@ void McpActivity::refresh() {
   stop_->setVisible(true);
   stop_->setEnabled(working_ && editing_);
   stop_->setToolTip(working_ && editing_ ? tr("Stop this operation and keep its changes available for Undo.")
-                                       : tr("No Patchy edit is running. Use Stop in your assistant to stop it between requests."));
+                                       : tr("No PhotoProject edit is running. Use Stop in your assistant to stop it between requests."));
   setVisible(connected_);
 }
 void McpActivity::changeEvent(QEvent* event) {
@@ -167,7 +167,7 @@ const QAction* McpActivity::shortcut_action(const QKeyEvent& event) const {
 bool McpActivity::explain_conflict(QEvent* event, bool closing) {
   if (closing || event->type() == QEvent::MouseButtonPress || event->type() == QEvent::MouseButtonRelease ||
       event->type() == QEvent::KeyPress || event->type() == QEvent::Shortcut || event->type() == QEvent::ContextMenu) {
-    const auto message = closing ? tr("Stop automation before closing Patchy.")
+    const auto message = closing ? tr("Stop automation before closing PhotoProject.")
         : window_.script_engine_host().paused()
             ? tr("Finishing the current edit. Manual editing is available when Resume appears.")
             : tr("Pause automation to change the document or its editing controls. Browsing and scrolling are available while it works.");

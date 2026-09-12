@@ -130,7 +130,7 @@ QString error_message(QPdfDocument::Error error, const QString& file_name) {
     case QPdfDocument::Error::InvalidFileFormat:
       return QObject::tr("%1 is not a readable PDF file.").arg(file_name);
     case QPdfDocument::Error::UnsupportedSecurityScheme:
-      return QObject::tr("%1 uses a security scheme Patchy cannot open.").arg(file_name);
+      return QObject::tr("%1 uses a security scheme PhotoProject cannot open.").arg(file_name);
     case QPdfDocument::Error::DataNotYetAvailable:
       return QObject::tr("%1 is still loading.").arg(file_name);
     case QPdfDocument::Error::None:
@@ -209,7 +209,7 @@ std::optional<PdfImportResult> render_pages(QPdfDocument& pdf, const PdfImportOp
   }
   if (frames.empty()) {
     if (error != nullptr) {
-      *error = QObject::tr("%1 has no pages Patchy could render.").arg(file_name);
+      *error = QObject::tr("%1 has no pages PhotoProject could render.").arg(file_name);
     }
     return std::nullopt;
   }

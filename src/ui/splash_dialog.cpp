@@ -160,7 +160,7 @@ public:
     copy->setSpacing(10);
     layout->addLayout(copy, 1);
 
-    auto* title = new QLabel(QObject::tr("Patchy Image Editor"), this);
+    auto* title = new QLabel(QObject::tr("PhotoProject Image Editor"), this);
     title->setObjectName(QStringLiteral("splashTitle"));
     title->setTextFormat(Qt::PlainText);
     copy->addWidget(title);
@@ -272,7 +272,7 @@ public:
     bottom->setSpacing(12);
     copy->addLayout(bottom);
 
-    status_ = new QLabel(QObject::tr("Patchy is ready."), this);
+    status_ = new QLabel(QObject::tr("PhotoProject is ready."), this);
     status_->setObjectName(QStringLiteral("splashStatus"));
     status_->setTextFormat(Qt::PlainText);
     status_->setWordWrap(true);
@@ -334,7 +334,7 @@ void show_about_splash(QWidget* parent) {
   // Item pedido: "remova completamente a conectividade a esse outro
   // app" — antes checava por atualizações contra o repositório do
   // projeto original (SethRobinson/Patchy) toda vez que essa tela
-  // "Sobre" era aberta; removido, o status mantém "Patchy is ready."
+  // "Sobre" era aberta; removido, o status mantém "PhotoProject is ready."
   // exec_dialog centers the dialog on its owner clamped to the screen (a raw
   // parent-centered move could push the Close button below a low main window)
   // and remembers a position the user dragged it to.

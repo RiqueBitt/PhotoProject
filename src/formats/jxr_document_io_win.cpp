@@ -274,10 +274,10 @@ FormatReadResult read_jxr(std::span<const std::uint8_t> bytes) {
 
   if (kind.is_float) {
     result.notices.push_back(
-        "This HDR image was tone mapped to 8-bit sRGB; Patchy edits 8 bits per channel.");
+        "This HDR image was tone mapped to 8-bit sRGB; PhotoProject edits 8 bits per channel.");
   } else if (kind.bits_per_channel > 8) {
     result.notices.push_back("Converted " + std::to_string(kind.bits_per_channel) +
-                             "-bit channels to 8-bit; Patchy edits 8 bits per channel.");
+                             "-bit channels to 8-bit; PhotoProject edits 8 bits per channel.");
   }
   if (frame_count > 1) {
     result.notices.push_back("Opened the primary image only (" + std::to_string(frame_count) +

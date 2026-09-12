@@ -8,7 +8,7 @@
 // Pixel access for the bundled photo-texture pattern presets
 // (core/pattern_presets.hpp's PhotoPatternPreset table; tiles live in the
 // ":/patchy/textures" Qt resources). Also the one-stop resolver every
-// style-preset site uses for "does this pattern id ship with Patchy": the
+// style-preset site uses for "does this pattern id ship with PhotoProject": the
 // code-generated presets and the photo presets together.
 namespace patchy::ui {
 

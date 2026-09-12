@@ -100,7 +100,7 @@ RawDevelopSettings load_raw_develop_settings(const QString& source_path) {
   QFile file(raw_develop_settings_path(source_path));
   result.exists = QFileInfo::exists(file.fileName());
   if (!result.exists) return result;
-  result.notice = QObject::tr("Saved RAW settings could not be read. Patchy defaults are being used.");
+  result.notice = QObject::tr("Saved RAW settings could not be read. PhotoProject defaults are being used.");
   // Settings should be small; reject oversized files without allocating their contents.
   if (!file.open(QIODevice::ReadOnly) || file.size() > 1024 * 1024) return result;
   result.original_bytes = file.readAll();

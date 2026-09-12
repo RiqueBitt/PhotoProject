@@ -70,8 +70,8 @@ QString default_documents_path(QString filename) {
 }
 
 void configure_printer(QPrinter& printer, const QPageLayout& page_layout, const QString& document_name) {
-  printer.setDocName(document_name.isEmpty() ? QObject::tr("Patchy Document") : document_name);
-  printer.setCreator(QStringLiteral("Patchy"));
+  printer.setDocName(document_name.isEmpty() ? QObject::tr("PhotoProject Document") : document_name);
+  printer.setCreator(QStringLiteral("PhotoProject"));
   printer.setColorMode(QPrinter::Color);
   printer.setPageLayout(valid_page_layout(page_layout));
 }
@@ -772,7 +772,7 @@ bool write_print_pdf(const QString& path, const Document& document, const PrintS
 void run_page_setup_dialog(QWidget* parent, QPageLayout* page_layout) {
   QPrinter printer(QPrinter::HighResolution);
   configure_printer(printer, page_layout != nullptr ? *page_layout : default_print_page_layout(),
-                    QObject::tr("Patchy Print"));
+                    QObject::tr("PhotoProject Print"));
   if (!ensure_printer_driver_usable(printer.printerName(), parent)) {
     return;
   }
@@ -1220,7 +1220,7 @@ bool run_photocopy_dialog(QWidget* parent, const Document& document) {
       return;
     }
     auto printer = create_selected_printer(printer_name);
-    configure_selected_printer(*printer, printer_name, current_layout, QObject::tr("Patchy Photocopy"));
+    configure_selected_printer(*printer, printer_name, current_layout, QObject::tr("PhotoProject Photocopy"));
     try {
       if (!printer->isValid()) {
         throw std::runtime_error("Selected printer is not available");

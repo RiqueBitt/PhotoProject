@@ -915,11 +915,11 @@ bool confirm_psd_raster_preview_font_substitution(QWidget* parent, const QString
   QMessageBox dialog(QMessageBox::Warning, QObject::tr("Missing Font"), QString(), QMessageBox::NoButton, parent);
   dialog.setObjectName(QStringLiteral("missingPsdTextFontMessageBox"));
   if (missing_fonts.size() == 1) {
-    dialog.setText(QObject::tr("Patchy can't locate the font \"%1\". Editing this PSD raster preview will substitute "
+    dialog.setText(QObject::tr("PhotoProject can't locate the font \"%1\". Editing this PSD raster preview will substitute "
                                "another font. Continue?")
                        .arg(missing_fonts.front()));
   } else {
-    dialog.setText(QObject::tr("Patchy can't locate these fonts: %1. Editing this PSD raster preview will substitute "
+    dialog.setText(QObject::tr("PhotoProject can't locate these fonts: %1. Editing this PSD raster preview will substitute "
                                "other fonts. Continue?")
                        .arg(missing_fonts.join(QStringLiteral(", "))));
   }

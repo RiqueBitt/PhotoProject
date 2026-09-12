@@ -47,21 +47,21 @@ QString smart_object_layer_warning(const Layer& layer) {
     return {};
   }
   if (lock == "external") {
-    return QObject::tr("%1 is a smart object linked to an external file; Patchy preserves it and can update it "
+    return QObject::tr("%1 is a smart object linked to an external file; PhotoProject preserves it and can update it "
                        "from disk when the source file is available.")
         .arg(name);
   }
   if (lock == "filters") {
-    return QObject::tr("%1 is a smart object with Smart Filters; Patchy preserves them and shows Photoshop's "
+    return QObject::tr("%1 is a smart object with Smart Filters; PhotoProject preserves them and shows Photoshop's "
                        "preview (rasterize the layer to edit it here).")
         .arg(name);
   }
   if (lock == "warp" || lock == "non_affine") {
-    return QObject::tr("%1 is a smart object with a warp or perspective transform; Patchy preserves it and shows "
+    return QObject::tr("%1 is a smart object with a warp or perspective transform; PhotoProject preserves it and shows "
                        "Photoshop's preview (rasterize the layer to edit it here).")
         .arg(name);
   }
-  return QObject::tr("%1 is a smart object Patchy can only preserve, not edit (%2).")
+  return QObject::tr("%1 is a smart object PhotoProject can only preserve, not edit (%2).")
       .arg(name, QString::fromStdString(lock));
 }
 
@@ -78,8 +78,8 @@ void append_unrendered_style_warnings(const Layer& layer, QStringList& warnings)
         return satin.unsupported_contour_options;
       });
   if (has_unsupported_satin_contour) {
-    warnings << QObject::tr("%1 contains Photoshop Satin contour settings that Patchy cannot render or edit "
-                            "(a custom curve or anti-aliasing). Patchy preserves them until layer styles are edited, "
+    warnings << QObject::tr("%1 contains Photoshop Satin contour settings that PhotoProject cannot render or edit "
+                            "(a custom curve or anti-aliasing). PhotoProject preserves them until layer styles are edited, "
                             "then uses the non-anti-aliased Linear contour.")
                     .arg(QString::fromStdString(layer.name()));
   }
@@ -91,17 +91,17 @@ void append_layer_warnings(const Layer& layer, QStringList& warnings) {
   if (!layer.raw_psd_blending_ranges().empty() &&
       layer.blend_if_payload_status() == BlendIfPayloadStatus::Unsupported) {
     warnings << QObject::tr("%1 contains Photoshop Blend If data for an unsupported color mode or payload shape. "
-                            "Patchy preserves it for PSD round-trip but does not render or edit it.")
+                            "PhotoProject preserves it for PSD round-trip but does not render or edit it.")
                     .arg(QString::fromStdString(layer.name()));
   }
   if (blend_if_payload_has_non_identity_or_unsupported(layer.raw_psd_group_boundary_blending_ranges())) {
-    warnings << QObject::tr("%1 contains Blend If data on a Photoshop group-boundary record. Patchy preserves "
+    warnings << QObject::tr("%1 contains Blend If data on a Photoshop group-boundary record. PhotoProject preserves "
                             "that boundary data but does not render or edit it.")
                     .arg(QString::fromStdString(layer.name()));
   }
   if (!layer.channel_restriction_supported()) {
     warnings << QObject::tr("%1 contains Photoshop channel blending restrictions for an unsupported color "
-                            "mode or payload shape. Patchy preserves them for PSD round-trip but does not "
+                            "mode or payload shape. PhotoProject preserves them for PSD round-trip but does not "
                             "render or edit them.")
                     .arg(QString::fromStdString(layer.name()));
   }
@@ -126,7 +126,7 @@ void append_layer_warnings(const Layer& layer, QStringList& warnings) {
       return found == layer.metadata().end() ? std::string{} : found->second;
     }();
     if (raster_status == "placeholder") {
-      warnings << QObject::tr("%1: extracted editable PSD text from %2, but Patchy generated a placeholder raster "
+      warnings << QObject::tr("%1: extracted editable PSD text from %2, but PhotoProject generated a placeholder raster "
                               "preview because the PSD text pixels were not visible.")
                        .arg(QString::fromStdString(layer.name()), source_block.isEmpty() ? QObject::tr("text data")
                                                                                          : source_block);
@@ -147,7 +147,7 @@ void append_layer_warnings(const Layer& layer, QStringList& warnings) {
     // curv / hue2 / blnc / nvrt / post / thrs / brit); only an adjustment
     // layer whose settings cannot be parsed stays Patchy-opaque.
     if (!settings.has_value()) {
-      warnings << QObject::tr("%1 is a Patchy-native adjustment layer; it round-trips in Patchy PSDs but may "
+      warnings << QObject::tr("%1 is a PhotoProject-native adjustment layer; it round-trips in PhotoProject PSDs but may "
                               "appear as an unsupported adjustment in other editors.")
                        .arg(QString::fromStdString(layer.name()));
     }
@@ -186,10 +186,10 @@ QStringList compatibility_warnings_for_document(const Document& document) {
   const auto color_mode = document.metadata().values.find("psd.color_mode");
   if (color_mode != document.metadata().values.end() && color_mode->second != "RGB") {
     if (color_mode->second == "CMYK") {
-      warnings << QObject::tr("The source color mode is CMYK; Patchy converted the pixels to RGB/RGBA for editing "
+      warnings << QObject::tr("The source color mode is CMYK; PhotoProject converted the pixels to RGB/RGBA for editing "
                               "and will export RGB PSD data from this document.");
     } else {
-      warnings << QObject::tr("The source color mode is %1; Patchy currently edits through RGB/RGBA workflows.")
+      warnings << QObject::tr("The source color mode is %1; PhotoProject currently edits through RGB/RGBA workflows.")
                        .arg(QString::fromStdString(color_mode->second));
     }
   }
@@ -241,7 +241,7 @@ void show_compatibility_report(QWidget* parent, const Document& document, const 
   auto* content = install_dark_dialog_chrome(
       dialog, root, QObject::tr("Compatibility: %1").arg(source_name.isEmpty() ? QObject::tr("document") : source_name));
 
-  auto* summary = new QLabel(QObject::tr("Patchy preserved the editable data it understands and flagged areas that "
+  auto* summary = new QLabel(QObject::tr("PhotoProject preserved the editable data it understands and flagged areas that "
                                          "may differ from Photoshop or other PSD editors."),
                              &dialog);
   summary->setWordWrap(true);
