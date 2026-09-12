@@ -95,7 +95,6 @@ using PosterizeSettings = PosterizeAdjustment;
 using ThresholdSettings = ThresholdAdjustment;
 using BrightnessContrastSettings = BrightnessContrastAdjustment;
 struct ScannerAcquireResult;
-struct UpdateInfo;
 enum class DividePhotosExistingFiles : int;
 // create_actions() build-phase context (main_window_actions_internal.hpp).
 struct ActionBuildContext;
@@ -147,11 +146,6 @@ public:
   // src/app/main.cpp). Returns false when the widget name is unknown or the save fails.
   bool save_debug_screenshot(const QString& file_path, const QString& widget_name = {},
                              const QRect& region = {});
-  void show_update_available(const UpdateInfo& update);
-  // The startup update check (honors updates/checkOnStartup). Called from src/app/main.cpp
-  // only, so tests constructing MainWindow never fire network requests; the result lands on
-  // the start panel's status line and, for an available update, show_update_available.
-  void begin_startup_update_check();
   [[nodiscard]] const HotkeyRegistry& hotkey_registry() const noexcept { return hotkey_registry_; }
   [[nodiscard]] BrushTipLibrary& brush_tip_library();
   [[nodiscard]] BrushAutomationLibrary& brush_automation_library();

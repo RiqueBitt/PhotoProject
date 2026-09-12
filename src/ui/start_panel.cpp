@@ -279,21 +279,9 @@ StartPanel::StartPanel(QWidget* parent) : QWidget(parent) {
   contributors->setOpenExternalLinks(true);
   add_footer_row({contributors});
 
-  const auto make_home_label = [this](const QString& text) {
-    auto* label = new QLabel(this);
-    label->setObjectName(QStringLiteral("startPanelHome"));
-    label->setTextFormat(Qt::RichText);
-    label->setTextInteractionFlags(Qt::TextBrowserInteraction);
-    label->setOpenExternalLinks(true);
-    set_themed_label_text(*label, text);
-    return label;
-  };
-  const auto github_link = QStringLiteral("<a style=\"color:@link_text; text-decoration:none;\" "
-                                          "href=\"https://github.com/SethRobinson/Patchy\">SethRobinson/Patchy</a>");
-  const auto seth_site_link = QStringLiteral("<a style=\"color:@link_text; text-decoration:none;\" "
-                                             "href=\"https://rtsoft.com\">rtsoft.com</a>");
-  add_footer_row({make_home_label(tr("GitHub: %1").arg(github_link)),
-                  make_home_label(tr("Seth's site: %1").arg(seth_site_link))});
+  // Item pedido: "remova completamente a conectividade a esse outro
+  // app" — removidos os links clicáveis pro GitHub/site do projeto
+  // original de onde este app foi baseado.
 
   update_status_label_ = new QLabel(this);
   update_status_label_->setObjectName(QStringLiteral("startPanelUpdateStatus"));

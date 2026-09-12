@@ -63,7 +63,6 @@
 #include "ui/theme_qss.hpp"
 #include "ui/app_settings.hpp"
 #include "ui/build_info.hpp"
-#include "ui/update_checker.hpp"
 #include "ui/visual_filter_gallery_dialog.hpp"
 #include "ui/zoomable_image_preview.hpp"
 #include "ui/zoom_status_bar.hpp"

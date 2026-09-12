@@ -6,7 +6,6 @@
 #include "ui/dialog_utils.hpp"
 #include "ui/memory_info.hpp"
 #include "ui/splash_artwork.hpp"
-#include "ui/update_checker.hpp"
 #include "ui/theme_qss.hpp"
 #include "ui/window_effects.hpp"
 
@@ -204,21 +203,13 @@ public:
     contributors->setOpenExternalLinks(true);
     copy->addWidget(contributors);
 
-    auto add_home_link = [this, copy](const QString& text) {
-      auto* label = new QLabel(this);
-      label->setObjectName(QStringLiteral("splashHome"));
-      label->setTextFormat(Qt::RichText);
-      label->setTextInteractionFlags(Qt::TextBrowserInteraction);
-      label->setOpenExternalLinks(true);
-      set_themed_label_text(*label, text);
-      copy->addWidget(label);
-    };
-    const auto github_link = QStringLiteral("<a style=\"color:@splash_link_text; text-decoration:none;\" "
-                                            "href=\"https://github.com/SethRobinson/Patchy\">SethRobinson/Patchy</a>");
-    add_home_link(QObject::tr("GitHub: %1").arg(github_link));
-    const auto seth_site_link = QStringLiteral("<a style=\"color:@splash_link_text; text-decoration:none;\" "
-                                               "href=\"https://rtsoft.com\">rtsoft.com</a>");
-    add_home_link(QObject::tr("Seth's site: %1").arg(seth_site_link));
+    // Item pedido: "remova completamente a conectividade a esse outro
+    // app" — removidos os links clicáveis pro GitHub/site do projeto
+    // original de onde este app foi baseado. O crédito de texto acima
+    // ("Created by...") continua — a licença MIT do código-fonte
+    // (arquivo LICENSE, mantido intacto no repositório) não exige um
+    // link clicável na interface, só que o aviso de copyright
+    // continue presente no próprio código-fonte distribuído.
 
 #ifndef Q_OS_WASM
     // The wasm settings store is window.localStorage, so there is no settings
@@ -293,18 +284,6 @@ public:
     bottom->addWidget(close, 0);
   }
 
-#ifndef Q_OS_WASM
-  void begin_update_check() {
-    set_status(QObject::tr("Checking for updates..."));
-    const QPointer<PatchySplashDialog> dialog_guard(this);
-    request_update_check(this, QStringLiteral(PATCHY_VERSION), [dialog_guard](UpdateCheckResult result) {
-      if (dialog_guard != nullptr) {
-        dialog_guard->set_status(update_check_status_text(result));
-      }
-    });
-  }
-#endif
-
   void set_status(const QString& text) {
     if (status_ != nullptr) {
       status_->setText(text);
@@ -352,11 +331,10 @@ private:
 
 void show_about_splash(QWidget* parent) {
   PatchySplashDialog splash(parent);
-#ifndef Q_OS_WASM
-  // The web build always runs the latest deployed site, so there is no update
-  // to check for; the status label keeps its "Patchy is ready." text.
-  splash.begin_update_check();
-#endif
+  // Item pedido: "remova completamente a conectividade a esse outro
+  // app" — antes checava por atualizações contra o repositório do
+  // projeto original (SethRobinson/Patchy) toda vez que essa tela
+  // "Sobre" era aberta; removido, o status mantém "Patchy is ready."
   // exec_dialog centers the dialog on its owner clamped to the screen (a raw
   // parent-centered move could push the Close button below a low main window)
   // and remembers a position the user dragged it to.

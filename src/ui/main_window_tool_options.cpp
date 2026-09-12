@@ -79,7 +79,6 @@
 #include "ui/warp_text_dialog.hpp"
 #include "ui/qt_geometry.hpp"
 #include "ui/splash_dialog.hpp"
-#include "ui/update_checker.hpp"
 #include "ui/zoom_status_bar.hpp"
 #include "ui/theme_qss.hpp"
 #include "ui/theme_palette.hpp"

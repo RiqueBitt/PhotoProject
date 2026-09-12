@@ -87,7 +87,6 @@
 #include "ui/qt_geometry.hpp"
 #include "ui/start_panel.hpp"
 #include "ui/splash_dialog.hpp"
-#include "ui/update_checker.hpp"
 #include "ui/zoom_status_bar.hpp"
 #include "support/string_utils.hpp"
 
@@ -3118,88 +3117,10 @@ void MainWindow::print_document() {
   }
 }
 
-void MainWindow::show_update_available(const UpdateInfo& update) {
-  // The install advice is artifact-specific: Windows ships an installer exe, macOS a
-  // drag-to-Applications DMG, Linux a Flatpak bundle.
-#if defined(Q_OS_MACOS)
-  const auto update_text = tr("Patchy %1 is available. You are using version %2.\n\n"
-                              "Download the DMG, quit Patchy, and drag the new Patchy into Applications.")
-                               .arg(update.version, QStringLiteral(PATCHY_VERSION));
-#elif defined(Q_OS_LINUX)
-  // A flatpak bundle installs from a local path only (URLs work only for repo-backed
-  // flatpakrefs), so the one-liner fetches the stable URL first. curl ships by default
-  // on Ubuntu/Fedora/Arch/openSUSE.
-  const auto bundle_name = QFileInfo(update.download_url.path()).fileName();
-  const auto install_command = QStringLiteral("curl -L -o /tmp/%1 %2 && flatpak install -y /tmp/%1")
-                                   .arg(bundle_name, update.download_url.toString());
-  const auto update_text = tr("Patchy %1 is available. You are using version %2.\n\n"
-                              "To update, paste this into a terminal:\n\n%3")
-                               .arg(update.version, QStringLiteral(PATCHY_VERSION), install_command);
-#else
-  const auto update_text = tr("Patchy %1 is available. You are using version %2.\n\n"
-                              "Save your work and close Patchy before running the installer.")
-                               .arg(update.version, QStringLiteral(PATCHY_VERSION));
-#endif
-  QMessageBox dialog(QMessageBox::Information, tr("Update Available"), update_text, QMessageBox::NoButton, this);
-  dialog.setObjectName(QStringLiteral("updateAvailableMessageBox"));
-  dialog.setTextInteractionFlags(Qt::TextSelectableByMouse);
-#if defined(Q_OS_LINUX)
-  auto* copy_button = dialog.addButton(tr("Copy Command"), QMessageBox::AcceptRole);
-  copy_button->setObjectName(QStringLiteral("updateCopyCommandButton"));
-  dialog.setDefaultButton(copy_button);
-#else
-  QAbstractButton* copy_button = nullptr;
-#endif
-  auto* download_button = dialog.addButton(tr("Download"), QMessageBox::AcceptRole);
-  dialog.addButton(tr("Not Now"), QMessageBox::RejectRole);
-#if !defined(Q_OS_LINUX)
-  dialog.setDefaultButton(download_button);
-#endif
-
-  exec_dialog(dialog);
-#if defined(Q_OS_LINUX)
-  if (dialog.clickedButton() == copy_button) {
-    if (auto* clipboard = QApplication::clipboard(); clipboard != nullptr) {
-      clipboard->setText(install_command);
-    }
-    statusBar()->showMessage(tr("Install command copied to the clipboard"));
-    return;
-  }
-#else
-  Q_UNUSED(copy_button);
-#endif
-  if (dialog.clickedButton() == download_button && !QDesktopServices::openUrl(update.download_url)) {
-    show_status_error(tr("Could not open the download link"));
-  }
-}
-
-void MainWindow::begin_startup_update_check() {
-#ifdef Q_OS_WASM
-  // The web build updates by redeploying the site; the GitHub manifest fetch
-  // would only fail CORS and surface a network error on the start panel.
-  return;
-#endif
-  {
-    auto settings = app_settings();
-    if (!settings.value(QStringLiteral("updates/checkOnStartup"), true).toBool()) {
-      return;
-    }
-  }
-  if (start_panel_ != nullptr) {
-    start_panel_->set_update_status(QObject::tr("Checking for updates..."));
-  }
-  // request_update_check drops the callback if this owner is destroyed first, so `this`
-  // stays safe to capture. The status lands on the panel even while it is hidden (a file
-  // was opened at startup): it shows if the panel reappears after the last document closes.
-  request_update_check(this, QStringLiteral(PATCHY_VERSION), [this](UpdateCheckResult result) {
-    if (start_panel_ != nullptr) {
-      start_panel_->set_update_status(update_check_status_text(result));
-    }
-    if (result.update.has_value()) {
-      show_update_available(*result.update);
-    }
-  });
-}
+// Item pedido: "remova completamente a conectividade a esse outro
+// app" — show_update_available()/begin_startup_update_check()
+// removidas (checavam e ofereciam baixar atualizações do projeto
+// original, SethRobinson/Patchy, não do PhotoProject/Project Club).
 
 void MainWindow::load_recent_files() {
   auto settings = recent_history_settings();

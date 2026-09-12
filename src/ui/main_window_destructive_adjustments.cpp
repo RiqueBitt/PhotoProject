@@ -53,7 +53,6 @@
 #include "ui/qt_geometry.hpp"
 #include "ui/splash_dialog.hpp"
 #include "ui/smart_object_render.hpp"
-#include "ui/update_checker.hpp"
 #include "ui/visual_filter_gallery_dialog.hpp"
 #include "ui/zoom_status_bar.hpp"
 #include "support/string_utils.hpp"

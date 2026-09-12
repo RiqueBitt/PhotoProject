@@ -708,9 +708,14 @@ int main(int argc, char* argv[]) {
     patchy::ui::wait_for_tracked_background_workers();
     return script_result;
   }
-  // No startup splash: the start panel carries the branding, and the update-check status
-  // lands on its footer (an available update still raises the update dialog).
-  window.begin_startup_update_check();
+  // Item pedido: "remova completamente a conectividade a esse outro
+  // app" — begin_startup_update_check() checava por versões novas
+  // contra o repositório GitHub do projeto original (SethRobinson/
+  // Patchy), não o nosso — removida a checagem inteira. O Project
+  // Club já cuida de atualizações do PhotoProject por conta própria
+  // (ver checkAndUpdateInstalledModules em projectMcManager.js, do
+  // lado do launcher desktop), então isso nunca fez falta de verdade
+  // pra esse app aqui dentro.
   // Finder opens reuse the second-launch path (raise the window, open the file); any
   // that arrived before the window existed join the command-line batch below.
   app.file_open_handler = [&window, &forwarded_requests, &forwarded_request_timer](const QString& path) {

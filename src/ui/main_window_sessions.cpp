@@ -72,7 +72,6 @@
 #include "ui/qt_geometry.hpp"
 #include "ui/start_panel.hpp"
 #include "ui/splash_dialog.hpp"
-#include "ui/update_checker.hpp"
 #include "ui/zoom_status_bar.hpp"
 #include "ui/theme_palette.hpp"
 #include "support/string_utils.hpp"

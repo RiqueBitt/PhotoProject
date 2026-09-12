@@ -45,7 +45,6 @@
 #include "ui/print_dialog.hpp"
 #include "ui/qt_geometry.hpp"
 #include "ui/splash_dialog.hpp"
-#include "ui/update_checker.hpp"
 #include "ui/window_effects.hpp"
 #include "ui/zoom_status_bar.hpp"
 #include "support/string_utils.hpp"
