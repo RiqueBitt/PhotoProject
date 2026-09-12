@@ -498,14 +498,12 @@ void MainWindow::show_preferences() {
   gui_scale_combo->setCurrentIndex(gui_scale_combo->findData(entry_gui_scale));
   application_form->addRow(tr("Interface scale:"), gui_scale_combo);
 
-#ifndef Q_OS_WASM
-  // The web build has no update check to configure: the deployed site is
-  // always the current version.
-  auto* update_check = new QCheckBox(tr("Check for updates on startup"), application_group);
-  update_check->setObjectName(QStringLiteral("preferencesCheckForUpdatesCheck"));
-  update_check->setChecked(settings.value(QStringLiteral("updates/checkOnStartup"), true).toBool());
-  application_form->addRow(update_check);
-#endif
+  // Item pedido: "remova completamente a conectividade a esse outro
+  // app" — a opção "Check for updates on startup" e o valor
+  // updates/checkOnStartup que ela controlava foram removidos junto
+  // com o sistema de verificação de atualização em si (ver
+  // main_window_files.cpp/main.cpp) — deixá-la na tela deixaria uma
+  // opção que parece fazer algo mas não faz mais nada.
   auto* psd_import_warnings_check =
       new QCheckBox(tr("Show import warnings and notes in a popup (status bar otherwise)"), application_group);
   psd_import_warnings_check->setObjectName(QStringLiteral("preferencesShowPsdImportWarningsCheck"));
@@ -1075,9 +1073,6 @@ void MainWindow::show_preferences() {
     color_scheme_committed = true;
     const auto new_grid_spacing_32 =
         std::clamp(static_cast<int>(std::lround(grid_spacing_spin->value() * 32.0)), 1, 320000);
-#ifndef Q_OS_WASM
-    settings.setValue(QStringLiteral("updates/checkOnStartup"), update_check->isChecked());
-#endif
     settings.setValue(QStringLiteral("imports/showPsdWarningsAndInfo"), psd_import_warnings_check->isChecked());
     settings.setValue(QStringLiteral("imports/showRawDevelopDialog"), raw_develop_check->isChecked());
     settings.setValue(QStringLiteral("imports/adoptIndexedPalette"), indexed_open_combo->currentData().toString());

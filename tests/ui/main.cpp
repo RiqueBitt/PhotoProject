@@ -195,7 +195,6 @@ int main(int argc, char* argv[]) {
     settings.remove(QStringLiteral("hotkeys"));
     settings.remove(QStringLiteral("preferences/language"));
     settings.remove(QStringLiteral("preferences/colorScheme"));
-    settings.setValue(QStringLiteral("updates/checkOnStartup"), false);
     settings.sync();
   }
   patchy::ui::LocalizationManager::instance().set_language(QStringLiteral("en"), false);

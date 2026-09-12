@@ -1538,174 +1538,9 @@ void choose_preferences_language(patchy::ui::MainWindow& window, const QString& 
   CHECK(saw_dialog);
 }
 
-void update_manifest_parser_handles_supported_cases() {
-  const QByteArray newer_manifest = R"({
-    "platforms": {
-      "windows": {
-        "version": "0.2",
-        "download_url": "https://rtsoft.com/patchy/PatchyWindowsInstaller.exe"
-      },
-      "macos": {
-        "version": "0.3.0",
-        "download_url": "https://rtsoft.com/patchy/PatchyMacOS.dmg"
-      }
-    }
-  })";
-  const auto update = patchy::ui::parse_update_manifest(newer_manifest, QStringLiteral("windows"),
-                                                        QStringLiteral("0.1.0"));
-  CHECK(update.has_value());
-  CHECK(update->platform == QStringLiteral("windows"));
-  CHECK(update->version == QStringLiteral("0.2"));
-  CHECK(update->download_url == QUrl(QStringLiteral("https://rtsoft.com/patchy/PatchyWindowsInstaller.exe")));
-  const auto update_result =
-      patchy::ui::inspect_update_manifest(newer_manifest, QStringLiteral("windows"), QStringLiteral("0.1.0"));
-  CHECK(update_result.status == patchy::ui::UpdateCheckStatus::UpdateAvailable);
-  CHECK(update_result.update.has_value());
-  CHECK(update_result.latest_version == QStringLiteral("0.2"));
-  CHECK(!patchy::ui::update_version_is_newer(QStringLiteral("0.2.0"), QStringLiteral("0.2")));
-  CHECK(!patchy::ui::update_version_is_newer(QStringLiteral("0.2"), QStringLiteral("0.2.0")));
-  CHECK(patchy::ui::update_version_is_newer(QStringLiteral("0.10"), QStringLiteral("0.2")));
-  CHECK(!patchy::ui::update_version_is_newer(QStringLiteral("0.1.0"), QStringLiteral("0.1.0")));
-  CHECK(!patchy::ui::update_version_is_newer(QStringLiteral("0.0.9"), QStringLiteral("0.1.0")));
-
-  const QByteArray equal_manifest = R"({
-    "platforms": {
-      "windows": {
-        "version": "0.1.0",
-        "download_url": "https://rtsoft.com/patchy/PatchyWindowsInstaller.exe"
-      }
-    }
-  })";
-  CHECK(!patchy::ui::parse_update_manifest(equal_manifest, QStringLiteral("windows"), QStringLiteral("0.1.0"))
-             .has_value());
-  const auto equal_result =
-      patchy::ui::inspect_update_manifest(equal_manifest, QStringLiteral("windows"), QStringLiteral("0.1.0"));
-  CHECK(equal_result.status == patchy::ui::UpdateCheckStatus::NoUpdateAvailable);
-  CHECK(equal_result.latest_version == QStringLiteral("0.1.0"));
-  const QByteArray lower_manifest = R"({
-    "platforms": {
-      "windows": {
-        "version": "0.0.9",
-        "download_url": "https://rtsoft.com/patchy/PatchyWindowsInstaller.exe"
-      }
-    }
-  })";
-  CHECK(!patchy::ui::parse_update_manifest(lower_manifest, QStringLiteral("windows"), QStringLiteral("0.1.0"))
-             .has_value());
-  CHECK(!patchy::ui::parse_update_manifest(newer_manifest, QStringLiteral("linux"), QStringLiteral("0.1.0"))
-             .has_value());
-  const auto missing_platform_result =
-      patchy::ui::inspect_update_manifest(newer_manifest, QStringLiteral("linux"), QStringLiteral("0.1.0"));
-  CHECK(missing_platform_result.status == patchy::ui::UpdateCheckStatus::MissingPlatform);
-  // A manifest that does carry a linux entry parses for the linux platform id.
-  const QByteArray linux_manifest = R"({
-    "platforms": {
-      "linux": {
-        "version": "0.2",
-        "download_url": "https://rtsoft.com/patchy/Patchy.flatpak"
-      }
-    }
-  })";
-  const auto linux_update =
-      patchy::ui::parse_update_manifest(linux_manifest, QStringLiteral("linux"), QStringLiteral("0.1.0"));
-  CHECK(linux_update.has_value());
-  CHECK(linux_update->platform == QStringLiteral("linux"));
-  CHECK(linux_update->download_url == QUrl(QStringLiteral("https://rtsoft.com/patchy/Patchy.flatpak")));
-  const auto invalid_manifest_result =
-      patchy::ui::inspect_update_manifest(QByteArray("{"), QStringLiteral("windows"), QStringLiteral("0.1.0"));
-  CHECK(invalid_manifest_result.status == patchy::ui::UpdateCheckStatus::InvalidManifest);
-  CHECK(!patchy::ui::parse_update_manifest(QByteArray("{"), QStringLiteral("windows"), QStringLiteral("0.1.0"))
-             .has_value());
-
-  const QByteArray empty_url_manifest = R"({
-    "platforms": {
-      "windows": {
-        "version": "0.2.0",
-        "download_url": ""
-      }
-    }
-  })";
-  CHECK(!patchy::ui::parse_update_manifest(empty_url_manifest, QStringLiteral("windows"), QStringLiteral("0.1.0"))
-             .has_value());
-  const auto empty_url_result =
-      patchy::ui::inspect_update_manifest(empty_url_manifest, QStringLiteral("windows"), QStringLiteral("0.1.0"));
-  CHECK(empty_url_result.status == patchy::ui::UpdateCheckStatus::InvalidDownloadUrl);
-
-  const QByteArray relative_url_manifest = R"({
-    "platforms": {
-      "windows": {
-        "version": "0.2.0",
-        "download_url": "PatchyWindowsInstaller.exe"
-      }
-    }
-  })";
-  CHECK(!patchy::ui::parse_update_manifest(relative_url_manifest, QStringLiteral("windows"), QStringLiteral("0.1.0"))
-             .has_value());
-}
-
-void ui_update_available_dialog_warns_to_close_patchy_before_installing() {
-  patchy::ui::MainWindow window;
-  show_window(window);
-
-  bool saw_dialog = false;
-  QTimer::singleShot(0, [&] {
-    auto* dialog = qobject_cast<QMessageBox*>(find_top_level_dialog(QStringLiteral("updateAvailableMessageBox")));
-    CHECK(dialog != nullptr);
-    // The install advice is per-platform (installer exe / DMG / Flatpak bundle).
-#if defined(Q_OS_MACOS)
-    CHECK(dialog->text().contains(QStringLiteral("drag the new Patchy into Applications")));
-#elif defined(Q_OS_LINUX)
-    CHECK(dialog->text().contains(QStringLiteral("flatpak install")));
-    CHECK(dialog->text().contains(QStringLiteral("curl -L -o")));
-    CHECK(dialog->findChild<QAbstractButton*>(QStringLiteral("updateCopyCommandButton")) != nullptr);
-#else
-    CHECK(dialog->text().contains(
-        QStringLiteral("Save your work and close Patchy before running the installer.")));
-#endif
-    saw_dialog = true;
-    dialog->reject();
-  });
-
-  window.show_update_available({QStringLiteral("windows"), QStringLiteral("9.9"),
-                                QUrl(QStringLiteral("https://rtsoft.com/files/PatchyWindowsInstaller.exe"))});
-  CHECK(saw_dialog);
-}
-
-void ui_update_preference_persists_startup_check_setting() {
-  SettingsValueRestorer restore_update_check(QStringLiteral("updates/checkOnStartup"));
-  {
-    auto settings = patchy::ui::app_settings();
-    settings.setValue(QStringLiteral("updates/checkOnStartup"), false);
-    settings.sync();
-  }
-
-  patchy::ui::MainWindow window;
-  show_window(window);
-
-  {
-    auto settings = patchy::ui::app_settings();
-    settings.setValue(QStringLiteral("updates/checkOnStartup"), true);
-    settings.sync();
-  }
-
-  bool saw_dialog = false;
-  QTimer::singleShot(0, [&] {
-    auto* dialog = find_top_level_dialog(QStringLiteral("patchyPreferencesDialog"));
-    CHECK(dialog != nullptr);
-    auto* check = dialog->findChild<QCheckBox*>(QStringLiteral("preferencesCheckForUpdatesCheck"));
-    CHECK(check != nullptr);
-    CHECK(check->isChecked());
-    check->setChecked(false);
-    saw_dialog = true;
-    dialog->accept();
-  });
-  require_action(window, "filePreferencesAction")->trigger();
-  QApplication::processEvents();
-  CHECK(saw_dialog);
-
-  auto settings = patchy::ui::app_settings();
-  CHECK(!settings.value(QStringLiteral("updates/checkOnStartup"), true).toBool());
-}
+// Item pedido: "remova completamente a conectividade a esse outro
+// app" — testes do sistema de verificação de atualização removidos
+// junto com o próprio sistema (update_checker.hpp/.cpp).
 
 struct GuiScaleDialogRun {
   bool saw_dialog{false};
@@ -2081,19 +1916,6 @@ void ui_main_window_persists_window_geometry() {
   restored.show();
   QApplication::processEvents();
   CHECK(restored.size() == stored.size());
-}
-
-void ui_update_preference_defaults_startup_check_setting_to_enabled() {
-  SettingsValueRestorer restore_update_check(QStringLiteral("updates/checkOnStartup"));
-  {
-    auto settings = patchy::ui::app_settings();
-    settings.remove(QStringLiteral("updates/checkOnStartup"));
-    settings.sync();
-  }
-
-  auto settings = patchy::ui::app_settings();
-  CHECK(!settings.contains(QStringLiteral("updates/checkOnStartup")));
-  CHECK(settings.value(QStringLiteral("updates/checkOnStartup"), true).toBool());
 }
 
 void ui_psd_import_warning_preference_defaults_to_hidden() {
@@ -3771,12 +3593,6 @@ std::vector<patchy::test::TestCase> app_shell_tests() {
        ui_open_remembers_last_directory_and_lists_recent_folders},
       {"ui_open_dialog_hides_name_filter_details", ui_open_dialog_hides_name_filter_details},
       {"ui_open_dialog_opens_every_selected_file", ui_open_dialog_opens_every_selected_file},
-      {"update_manifest_parser_handles_supported_cases", update_manifest_parser_handles_supported_cases},
-      {"ui_update_available_dialog_warns_to_close_patchy_before_installing",
-       ui_update_available_dialog_warns_to_close_patchy_before_installing},
-      {"ui_update_preference_defaults_startup_check_setting_to_enabled",
-       ui_update_preference_defaults_startup_check_setting_to_enabled},
-      {"ui_update_preference_persists_startup_check_setting", ui_update_preference_persists_startup_check_setting},
       {"ui_gui_scale_preference_persists_setting", ui_gui_scale_preference_persists_setting},
       {"ui_gui_scale_preference_persists_step_below_full_size",
        ui_gui_scale_preference_persists_step_below_full_size},
