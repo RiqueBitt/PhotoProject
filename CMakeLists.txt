@@ -1326,6 +1326,18 @@ if(PATCHY_BUILD_APP)
         MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}"
         MACOSX_BUNDLE_ICON_FILE "patchy.icns"
       )
+    else()
+      # Item pedido: "o nome do .exe ainda está patchy, corrija isso" —
+      # sem essa propriedade, o binário saía com o mesmo nome do
+      # target CMake ("patchy") no Windows e no Linux — só o macOS
+      # tinha OUTPUT_NAME definido acima. O target em si continua se
+      # chamando "patchy" internamente (usado em dezenas de comandos
+      # CMake ao longo deste arquivo — renomear o target exigiria
+      # trocar todos esses lugares, sem necessidade real), só o nome
+      # do ARQUIVO final gerado muda.
+      set_target_properties(patchy PROPERTIES OUTPUT_NAME "PhotoProject")
+    endif()
+    if(APPLE)
       if(EXISTS "${PROJECT_SOURCE_DIR}/packaging/macos/patchy.icns")
         target_sources(patchy PRIVATE "${PROJECT_SOURCE_DIR}/packaging/macos/patchy.icns")
         set_source_files_properties("${PROJECT_SOURCE_DIR}/packaging/macos/patchy.icns"

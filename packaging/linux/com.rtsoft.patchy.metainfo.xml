@@ -3,11 +3,11 @@
   <id>com.rtsoft.patchy</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT</project_license>
-  <name>Patchy</name>
-  <summary>PSD-oriented raster image editor</summary>
+  <name>PhotoProject</name>
+  <summary>PSD-oriented raster image editor — part of Project Club</summary>
   <description>
     <p>
-      Patchy is a fast raster image editor built around the Photoshop PSD format:
+      PhotoProject is a fast raster image editor built around the Photoshop PSD format:
       layers, folders, masks, adjustment layers, layer styles, and text layers
       round-trip with Photoshop. It ships Photoshop-style tools (marquee, lasso,
       magnetic lasso, magic wand, quick select, brushes with .abr import and
@@ -16,10 +16,10 @@
     </p>
   </description>
   <launchable type="desktop-id">com.rtsoft.patchy.desktop</launchable>
-  <url type="homepage">https://github.com/SethRobinson/Patchy</url>
-  <url type="bugtracker">https://github.com/SethRobinson/Patchy/issues</url>
-  <developer id="com.rtsoft">
-    <name>Seth A. Robinson</name>
+  <url type="homepage">https://github.com/RiqueBitt/PhotoProject</url>
+  <url type="bugtracker">https://github.com/RiqueBitt/PhotoProject/issues</url>
+  <developer id="club.project">
+    <name>Project Club</name>
   </developer>
   <content_rating type="oars-1.1"/>
   <supports>

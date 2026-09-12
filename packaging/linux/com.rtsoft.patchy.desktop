@@ -1,9 +1,9 @@
 [Desktop Entry]
 Type=Application
-Name=Patchy
+Name=PhotoProject
 GenericName=Image Editor
 GenericName[ja]=画像エディタ
-Comment=PSD-oriented raster image editor
+Comment=PSD-oriented raster image editor — part of Project Club
 Comment[ja]=PSD 対応のラスター画像エディタ
 Exec=patchy %F
 Icon=com.rtsoft.patchy
