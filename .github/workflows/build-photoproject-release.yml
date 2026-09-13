@@ -112,10 +112,54 @@ jobs:
           chmod +x "$STAGE/photoproject.sh" "$STAGE/PhotoProject"
           cd "$GITHUB_WORKSPACE"
           tar -C stage -czf "photoproject-${{ inputs.version }}-linux.tar.gz" .
+      - name: Empacotar AppImage
+        run: |
+          set -e
+          # Item pedido: "adicione suporte para gerar uma versão
+          # .AppImage... permitindo que o usuário execute os
+          # aplicativos em distribuições Linux sem precisar instalar
+          # dependências manualmente" — reaproveita a MESMA pasta
+          # "stage" já montada acima (binário + libs Qt + plugins já
+          # copiados e testados no .tar.gz) em vez de montar tudo de
+          # novo do zero — só reorganiza pra estrutura padrão que um
+          # AppImage exige (AppDir/usr/bin, AppDir/usr/lib, um
+          # .desktop, um ícone e um AppRun).
+          APPDIR="$GITHUB_WORKSPACE/AppDir"
+          mkdir -p "$APPDIR/usr/bin" "$APPDIR/usr/lib" "$APPDIR/usr/plugins"
+          cp stage/PhotoProject "$APPDIR/usr/bin/"
+          cp stage/lib/*.so* "$APPDIR/usr/lib/" 2>/dev/null || true
+          cp -r stage/plugins/* "$APPDIR/usr/plugins/" 2>/dev/null || true
+          cp packaging/linux/icons/hicolor/256x256/apps/com.rtsoft.patchy.png "$APPDIR/photoproject.png"
+          cat > "$APPDIR/photoproject.desktop" << 'DESKTOP_EOF'
+          [Desktop Entry]
+          Type=Application
+          Name=PhotoProject
+          Exec=PhotoProject
+          Icon=photoproject
+          Categories=Graphics;
+          DESKTOP_EOF
+          cat > "$APPDIR/AppRun" << 'APPRUN_EOF'
+          #!/bin/bash
+          DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+          export LD_LIBRARY_PATH="$DIR/usr/lib:$LD_LIBRARY_PATH"
+          export QT_PLUGIN_PATH="$DIR/usr/plugins"
+          exec "$DIR/usr/bin/PhotoProject" "$@"
+          APPRUN_EOF
+          chmod +x "$APPDIR/AppRun" "$APPDIR/usr/bin/PhotoProject"
+          wget -q "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage" -O appimagetool
+          chmod +x appimagetool
+          # appimagetool tenta abrir uma janela FUSE por padrão — sem
+          # ambiente gráfico no runner, precisa do modo --appimage-extract-and-run.
+          ./appimagetool --appimage-extract-and-run "$APPDIR" "photoproject-${{ inputs.version }}-linux.AppImage"
+          chmod +x "photoproject-${{ inputs.version }}-linux.AppImage"
       - uses: actions/upload-artifact@v4
         with:
           name: photoproject-linux
           path: photoproject-${{ inputs.version }}-linux.tar.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: photoproject-linux-appimage
+          path: photoproject-${{ inputs.version }}-linux.AppImage
 
   publish:
     needs: [build-windows, build-linux]
@@ -130,6 +174,7 @@ jobs:
           gh release create "v${{ inputs.version }}" \
             dist/photoproject-win/photoproject-${{ inputs.version }}-win.zip \
             dist/photoproject-linux/photoproject-${{ inputs.version }}-linux.tar.gz \
+            dist/photoproject-linux-appimage/photoproject-${{ inputs.version }}-linux.AppImage \
             --repo RiqueBitt/PhotoProject_releases- \
             --title "PhotoProject v${{ inputs.version }}" \
             --notes "Build automática do PhotoProject — editor de imagem opcional do Project Club."
