@@ -121,12 +121,17 @@ jobs:
           # nenhuma. Sem isso o app não abria ("could not load the Qt platform plugin xcb").
           for round in 1 2 3; do
             for f in "$STAGE"/plugins/*/*.so "$STAGE"/lib/*.so*; do
-              for lib in $(ldd "$f" 2>/dev/null | grep "$QT_DIR" | awk '{print $3}'); do
+              for lib in $(LD_LIBRARY_PATH="$QT_DIR/lib" ldd "$f" 2>/dev/null | grep "$QT_DIR" | awk '{print $3}'); do
                 cp -n "$lib" "$STAGE/lib/" || true
               done
             done
           done
           cp -n "$QT_DIR"/lib/libicu*.so* "$STAGE/lib/" 2>/dev/null || true
+          # Garantia extra: bibliotecas que os plugins abrem e que o ldd pode não
+          # resolver pela RUNPATH relativa ($ORIGIN/../../lib) depois de copiados.
+          for n in XcbQpa OpenGL OpenGLWidgets WaylandClient; do
+            cp -nL "$QT_DIR"/lib/libQt6${n}.so.6 "$STAGE/lib/" 2>/dev/null || true
+          done
           ls "$STAGE/lib"
           echo "Faltando (deve ficar vazio):"
           LD_LIBRARY_PATH="$STAGE/lib" ldd "$STAGE/plugins/platforms/libqxcb.so" "$STAGE/PhotoProject" | grep "not found" || true
