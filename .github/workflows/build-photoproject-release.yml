@@ -116,6 +116,20 @@ jobs:
           for p in qgif qjpeg qsvg qtiff qwebp; do
             cp "$QT_DIR/plugins/imageformats/lib${p}.so" "$STAGE/plugins/imageformats/" 2>/dev/null || true
           done
+          # Os plugins também dependem de bibliotecas do Qt (ex.: libqxcb.so precisa
+          # da libQt6XcbQpa): copia as dependências deles, repetindo até não faltar
+          # nenhuma. Sem isso o app não abria ("could not load the Qt platform plugin xcb").
+          for round in 1 2 3; do
+            for f in "$STAGE"/plugins/*/*.so "$STAGE"/lib/*.so*; do
+              for lib in $(ldd "$f" 2>/dev/null | grep "$QT_DIR" | awk '{print $3}'); do
+                cp -n "$lib" "$STAGE/lib/" || true
+              done
+            done
+          done
+          cp -n "$QT_DIR"/lib/libicu*.so* "$STAGE/lib/" 2>/dev/null || true
+          ls "$STAGE/lib"
+          echo "Faltando (deve ficar vazio):"
+          LD_LIBRARY_PATH="$STAGE/lib" ldd "$STAGE/plugins/platforms/libqxcb.so" "$STAGE/PhotoProject" | grep "not found" || true
           cat > "$STAGE/photoproject.sh" << 'LAUNCHER_EOF'
           #!/bin/bash
           DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

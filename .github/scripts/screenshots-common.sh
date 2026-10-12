@@ -4,7 +4,7 @@ set -u
 APP="$(readlink -f "$1")"
 OUT="$(mkdir -p "$2" && readlink -f "$2")"
 chmod +x "$APP" 2>/dev/null
-export DISPLAY=:99 APPIMAGE_EXTRACT_AND_RUN=1 NO_AT_BRIDGE=1 LIBGL_ALWAYS_SOFTWARE=1
+export DISPLAY=:99 APPIMAGE_EXTRACT_AND_RUN=1 NO_AT_BRIDGE=1 LIBGL_ALWAYS_SOFTWARE=1 QT_DEBUG_PLUGINS=${QT_DEBUG_PLUGINS:-0}
 Xvfb :99 -screen 0 1600x1000x24 -nolisten tcp >/dev/null 2>&1 &
 sleep 2
 (command -v openbox >/dev/null && openbox >/dev/null 2>&1 &)
