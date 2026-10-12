@@ -1,0 +1,57 @@
+name: Copiar releases do repositório antigo
+
+# Traz as releases (com todos os arquivos) do antigo repositório "-releases"
+# para este repositório, que passa a ser o lugar oficial dos downloads.
+# Pode rodar mais de uma vez: release que já existe aqui só ganha os
+# arquivos que faltarem. O repositório antigo não é alterado.
+
+on:
+  workflow_dispatch:
+    inputs:
+      from:
+        description: 'Repositório de origem (dono/nome)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  copy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Copiar releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SRC: ${{ inputs.from }}
+          DST: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          BRANCH=$(gh api "repos/$DST" --jq .default_branch)
+          # da mais antiga para a mais nova, para a mais nova ficar como "Latest"
+          gh api --paginate "repos/$SRC/releases?per_page=100" --jq '.[] | select(.draft|not) | [.created_at, .tag_name] | @tsv' \
+            | sort | cut -f2 > tags.txt
+          echo "Releases em $SRC: $(wc -l < tags.txt)"
+          while read -r TAG; do
+            echo "::group::$TAG"
+            rm -rf dl && mkdir dl
+            gh api "repos/$SRC/releases/tags/$TAG" > rel.json
+            NAME=$(jq -r '.name // .tag_name' rel.json)
+            jq -r '.body // ""' rel.json > notes.md
+            PRE=$(jq -r '.prerelease' rel.json)
+            gh release download "$TAG" -R "$SRC" -D dl --skip-existing
+            ls -la dl
+            if gh release view "$TAG" -R "$DST" >/dev/null 2>&1; then
+              HAVE=$(gh release view "$TAG" -R "$DST" --json assets --jq '.assets[].name')
+              for f in dl/*; do
+                [ -e "$f" ] || continue
+                grep -qxF "$(basename "$f")" <<< "$HAVE" || gh release upload "$TAG" "$f" -R "$DST"
+              done
+            else
+              ARGS=(--title "$NAME" --notes-file notes.md --target "$BRANCH")
+              [ "$PRE" = true ] && ARGS+=(--prerelease)
+              gh release create "$TAG" dl/* -R "$DST" "${ARGS[@]}"
+            fi
+            echo "::endgroup::"
+          done < tags.txt
+          echo "Pronto. Releases em $DST: $(gh api --paginate "repos/$DST/releases?per_page=100" --jq '.[].tag_name' | wc -l)"
