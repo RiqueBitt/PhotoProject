@@ -164,17 +164,20 @@ jobs:
   publish:
     needs: [build-windows, build-linux]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/download-artifact@v4
         with: { path: dist }
-      - name: Publicar release em PhotoProject_releases
+      - name: Publicar release neste repositório
         env:
-          GH_TOKEN: ${{ secrets.RELEASES_REPO_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "v${{ inputs.version }}" \
             dist/photoproject-win/photoproject-${{ inputs.version }}-win.zip \
             dist/photoproject-linux/photoproject-${{ inputs.version }}-linux.tar.gz \
             dist/photoproject-linux-appimage/photoproject-${{ inputs.version }}-linux.AppImage \
-            --repo RiqueBitt/PhotoProject_releases- \
+            --repo ${{ github.repository }} \
+            --target ${{ github.sha }} \
             --title "PhotoProject v${{ inputs.version }}" \
             --notes "Build automática do PhotoProject — editor de imagem opcional do Project Club."
