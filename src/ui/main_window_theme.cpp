@@ -1135,8 +1135,9 @@ QString photoshop_style_template() {
 QString photoshop_style() {
   // Both palettes are compile-time constants, so a scheme's resolved sheet never
   // changes once built and can be cached for the process lifetime.
-  static std::array<QString, 2> resolved;
-  auto& cached = resolved[active_color_scheme() == ColorScheme::Light ? 1 : 0];
+  // Um slot por ColorScheme (Dark, Light, ProjectClub), indexado pelo valor do enum.
+  static std::array<QString, 3> resolved;
+  auto& cached = resolved[static_cast<std::size_t>(active_color_scheme())];
   if (cached.isEmpty()) {
     cached = apply_theme_tokens(photoshop_style_template());
   }

@@ -23,9 +23,14 @@
 
 namespace patchy::ui {
 
-enum class ColorSchemePreference { FollowSystem, Dark, Light };
+enum class ColorSchemePreference { FollowSystem, Dark, Light, ProjectClub };
 
-// Persisted identifiers: "system", "dark", "light". Never rename or re-spell.
+// Persisted identifiers: "system", "dark", "light", "projectclub". Never rename or
+// re-spell.
+//
+// Project Club: sem preferência salva (primeira execução), o tema usado é o
+// "Project Club". Uma escolha feita pelo usuário em Preferências continua sendo
+// respeitada, inclusive "Follow system", "Dark" e "Light".
 [[nodiscard]] QString color_scheme_preference_to_token(ColorSchemePreference preference);
 [[nodiscard]] ColorSchemePreference color_scheme_preference_from_token(const QString& token);
 
@@ -64,7 +69,7 @@ class ThemeManager : public QObject {
   void mirror_scheme_onto_qt();
   void apply_resolved_scheme();
 
-  ColorSchemePreference preference_ = ColorSchemePreference::FollowSystem;
+  ColorSchemePreference preference_ = ColorSchemePreference::ProjectClub;
   std::optional<Qt::ColorScheme> system_scheme_override_;
 };
 

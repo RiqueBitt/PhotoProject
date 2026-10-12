@@ -61,6 +61,7 @@
     <file alias="plugin.svg">icons/plugin.svg</file>
     <file alias="scroll-dither.svg">icons/scroll-dither.svg</file>
     <file alias="light/scroll-dither.svg">icons/light/scroll-dither.svg</file>
+    <file alias="projectclub/scroll-dither.svg">icons/projectclub/scroll-dither.svg</file>
     <file alias="light/spin-minus.svg">icons/light/spin-minus.svg</file>
     <file alias="light/spin-minus-disabled.svg">icons/light/spin-minus-disabled.svg</file>
     <file alias="light/spin-plus.svg">icons/light/spin-plus.svg</file>

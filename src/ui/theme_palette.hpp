@@ -24,7 +24,9 @@
 
 namespace patchy::ui {
 
-enum class ColorScheme { Dark, Light };
+// ProjectClub é o tema escuro compartilhado pelos apps do Project Club (destaque
+// roxo no PhotoProject) e é o padrão em instalações novas; ver theme_manager.hpp.
+enum class ColorScheme { Dark, Light, ProjectClub };
 
 struct ThemePalette {
   // Base surfaces, text, and window frame.
@@ -447,6 +449,7 @@ struct ThemePalette {
 
 [[nodiscard]] const ThemePalette& dark_palette();
 [[nodiscard]] const ThemePalette& light_palette();
+[[nodiscard]] const ThemePalette& project_club_palette();
 [[nodiscard]] const ThemePalette& theme(ColorScheme scheme);
 
 // The palette for the scheme currently applied to the UI. Valid from static

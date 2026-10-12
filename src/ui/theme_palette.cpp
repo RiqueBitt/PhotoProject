@@ -666,8 +666,401 @@ const ThemePalette& light_palette() {
   return palette;
 }
 
+// Tema "Project Club": a paleta escura compartilhada por todos os apps do
+// ecossistema Project Club, com o roxo como cor de destaque do PhotoProject.
+//
+// Parte de dark_palette() (então todo papel novo já nasce definido) e
+// sobrescreve as superfícies, bordas, texto e destaques. Cores que carregam
+// significado próprio (avisos, erros, sintaxe de script, pastas, cadeados)
+// ficam como no Dark de propósito.
+//
+// Paleta base do Project Club:
+//   fundos   #1E1F24 (painéis) · #17181C (secundário) · #131417 (janela)
+//            #0E0F12 (o mais fundo, em volta do canvas)
+//   bordas   #2E3038 · #3A3D47 (secundária)
+//   botões   #343742
+//   texto    #F0F5FA (primário) · #A9AEBB (secundário)
+//   destaque #A855F7 · #C084FC (hover/claro) · #7E22CE (pressionado/escuro)
+const ThemePalette& project_club_palette() {
+  static const ThemePalette palette = [] {
+    ThemePalette pc = dark_palette();
+
+    // Paleta base.
+    const QColor bg_primary = rgb(0x1e1f24);
+    const QColor bg_secondary = rgb(0x17181c);
+    const QColor bg_tertiary = rgb(0x131417);
+    const QColor bg_deepest = rgb(0x0e0f12);
+    const QColor stroke = rgb(0x2e3038);
+    const QColor stroke_secondary = rgb(0x3a3d47);
+    const QColor control = rgb(0x343742);
+    const QColor control_hover = rgb(0x3f4350);
+    const QColor stroke_hover = rgb(0x4d5160);
+    const QColor text = rgb(0xf0f5fa);
+    const QColor text_body = rgb(0xd3d8e2);
+    const QColor text_muted = rgb(0xa9aebb);
+    const QColor text_faint = rgb(0x7c8190);
+    const QColor text_off = rgb(0x5d6170);
+    const QColor accent = rgb(0xa855f7);
+    const QColor accent_light = rgb(0xc084fc);
+    const QColor accent_dark = rgb(0x7e22ce);
+    const QColor accent_pale = rgb(0xe9d5ff);
+    // O destaque misturado sobre o fundo: seleção "suave" (listas, linhas de
+    // camada, cards) que ainda deixa o texto claro bem legível.
+    const QColor accent_soft = rgb(0x3c2b52);
+    const QColor accent_soft_hover = rgb(0x472f63);
+
+    // Superfícies, texto e moldura da janela.
+    pc.window_bg = bg_primary;
+    pc.window_border = stroke;
+    pc.text_primary = text;
+    pc.script_accent = accent_light;
+    pc.script_card_border = stroke_secondary;
+    pc.script_card_bg = bg_secondary;
+    pc.script_card_title = text;
+    pc.script_card_author = text_muted;
+    pc.script_card_body = text_body;
+    pc.script_gutter_bg = bg_secondary;
+    pc.script_gutter_text = text_faint;
+
+    pc.text_secondary = text_body;
+    pc.text_bright = text;
+    pc.text_disabled = text_off;
+    pc.text_on_accent = rgb(0xffffff);
+    pc.text_on_raised = rgb(0xffffff);
+    pc.splitter_bg = bg_deepest;
+    pc.splitter_hover_bg = accent;
+    pc.dock_separator_bg = stroke;
+
+    // Barra de título / menu: o fundo "de janela" do Project Club.
+    pc.title_bar_bg = bg_tertiary;
+    pc.title_bar_border = stroke;
+
+    // Barra de menus e menus.
+    pc.menu_bar_item_hover_bg = control;
+    pc.menu_bar_text_disabled = text_faint;
+    pc.menu_bg = bg_secondary;
+    pc.menu_border = stroke_secondary;
+    pc.menu_item_selected_bg = accent_dark;
+    pc.menu_separator = stroke;
+
+    // Barras de ferramentas e botões de ferramenta.
+    pc.toolbar_bg = bg_secondary;
+    pc.toolbar_border = stroke;
+    pc.button_hover_bg = control_hover;
+    pc.button_hover_border = stroke_hover;
+    pc.accent_pressed_bg = accent_dark;
+    pc.accent_border_bright = accent_light;
+
+    // Botões da moldura personalizada (minimizar/maximizar/fechar).
+    pc.window_chrome_hover_bg = control;
+    pc.window_chrome_pressed_bg = stroke;
+
+    // Paleta de ferramentas.
+    pc.tool_palette_bg = bg_secondary;
+    pc.tool_palette_border = stroke;
+    pc.tool_palette_separator = stroke_secondary;
+
+    // Barra de opções.
+    pc.options_bar_bg = bg_secondary;
+    pc.options_bar_top_edge = stroke;
+    pc.option_separator = stroke_secondary;
+    pc.option_chip_bg = bg_tertiary;
+    pc.field_bg = bg_tertiary;
+    pc.field_inset_border = bg_deepest;
+    pc.field_bevel_top = stroke_secondary;
+    pc.options_button_bg = control;
+    pc.accent_checked_bg = accent_dark;
+    pc.accent_checked_border = accent_light;
+
+    // Caixas de seleção e sliders.
+    pc.checkbox_compact_bg = bg_tertiary;
+    pc.checkbox_compact_border = stroke_hover;
+    pc.checkbox_indicator_bg = control;
+    pc.checkbox_indicator_border = stroke_hover;
+    pc.checkbox_accent_border = accent_pale;
+    pc.accent = accent;
+    pc.slider_groove_bg = bg_deepest;
+    pc.slider_groove_border = stroke_secondary;
+    pc.slider_fill_border = accent_light;
+    pc.slider_handle_bg = text_body;
+    pc.slider_handle_border = bg_deepest;
+
+    // Spin boxes dos diálogos.
+    pc.spinbox_disabled_bg = bg_secondary;
+    pc.spinbox_disabled_text = text_off;
+    pc.spin_button_disabled_bg = bg_secondary;
+    pc.spin_button_disabled_bevel = stroke;
+
+    // Docks e painéis.
+    pc.dock_title_bg = bg_secondary;
+    pc.panel_border_strong = stroke;
+    pc.panel_title_bg = bg_secondary;
+    pc.panel_title_bevel_top = stroke_secondary;
+    pc.panel_title_border_bottom = bg_deepest;
+    pc.dock_collapse_text = text_body;
+    pc.dock_collapse_hover_bg = control;
+    pc.dock_collapse_hover_border = stroke_hover;
+    pc.panel_bg = bg_primary;
+    pc.panel_inset_bg = bg_secondary;
+    pc.panel_inset_border = stroke_secondary;
+    pc.info_text = text_body;
+
+    // Campos de texto e listas.
+    pc.field_bg_large = bg_secondary;
+    pc.field_border = stroke_secondary;
+    pc.field_bg_disabled = bg_secondary;
+    pc.field_text_disabled = text_off;
+    pc.field_border_disabled = stroke;
+    pc.list_selection_bg = accent_soft;
+    pc.list_item_border = bg_secondary;
+    pc.list_selection_text = text;
+    pc.list_selection_border = accent;
+    pc.category_list_item_border = stroke;
+    pc.category_selected_bg = accent_soft;
+    pc.category_selected_border = accent;
+    pc.history_future_text = text_off;
+
+    // Linhas e painel de camadas.
+    pc.layer_row_bg = bg_primary;
+    pc.layer_row_border = stroke;
+    pc.layer_row_group_bg = rgb(0x23252b);
+    pc.layer_row_selected_bg = accent_soft;
+    pc.layer_row_selected_border = accent;
+    pc.layer_row_name_text = text;
+    pc.layer_row_details_text = text_muted;
+    pc.layer_glyph_text = text_body;
+    pc.layer_visibility_text = text;
+    pc.layer_button_hover_bg = control;
+    pc.layer_button_hover_border = stroke_hover;
+    pc.layer_lock_border = stroke_secondary;
+    pc.layer_lock_hover_border = stroke_hover;
+    pc.layer_lock_mixed_bg = control;
+    pc.layer_lock_mixed_border = text_faint;
+    pc.layer_drop_bg = accent_soft_hover;
+    pc.layer_depth_guide = stroke_secondary;
+    pc.layer_eye_on = text;
+    pc.layer_eye_off = text_faint;
+    pc.layer_lock_badge_inherited = text_faint;
+    pc.layer_thumbnail_border = text_faint;
+    pc.layer_clip_badge = accent_light;
+
+    // Destaque forte (alvos ativos, chip de edição de máscara).
+    pc.accent_bright = accent;
+    pc.accent_bright_hover = accent_light;
+    pc.accent_bright_border = accent_pale;
+    pc.text_on_accent_bright = rgb(0xffffff);
+
+    // Botões.
+    pc.button_bg = control;
+    pc.button_border = stroke_secondary;
+    pc.button_hover_border_strong = accent_light;
+
+    // Barra de status. status_error_mark precisa ser igual a status_bar_bg.
+    pc.status_bar_bg = bg_secondary;
+    pc.status_text = text_body;
+    pc.status_text_disabled = text_off;
+    pc.status_field_bg = bg_tertiary;
+    pc.status_field_border = stroke_secondary;
+    pc.status_field_border_disabled = stroke;
+    pc.status_error_mark = bg_secondary;
+
+    // Indicadores de soltar e alças do editor de texto.
+    pc.drop_indicator_bg = accent_light;
+    pc.drop_indicator_border = bg_deepest;
+    pc.resize_handle_bg = text;
+    pc.resize_handle_border = bg_tertiary;
+    pc.hint_text = text_muted;
+
+    // Console de scripts.
+    pc.script_detail_text = text_muted;
+
+    // Linhas pintadas à mão, painéis de pré-visualização e controles pintados.
+    pc.list_row_hover_bg = control;
+    pc.preview_pane_bg = bg_secondary;
+    pc.preview_pane_muted_text = text_muted;
+    pc.accent_control = accent_light;
+
+    // Abas.
+    pc.tab_bg = bg_secondary;
+    pc.tab_hover_bg = control;
+    pc.tab_selected_bg = rgb(0x2a2c34);
+    pc.tab_pane_border = stroke_secondary;
+
+    // Abas do seletor de cores.
+    pc.picker_tab_bg = bg_secondary;
+    pc.picker_tab_border = stroke;
+    pc.picker_tab_hover_bg = control;
+    pc.picker_tab_selected_bg = control_hover;
+
+    // Canvas: o entorno do documento usa o fundo mais escuro.
+    pc.canvas_backdrop = bg_deepest;
+    pc.canvas_empty_text = text_muted;
+    pc.canvas_document_border = stroke_secondary;
+    pc.canvas_layer_selection_border = accent_light;
+    pc.canvas_layer_selection_fill = QColor(168, 85, 247, 30);
+    pc.ruler_bar_bg = bg_secondary;
+    pc.ruler_corner_bg = bg_tertiary;
+    pc.ruler_edge = stroke_secondary;
+    pc.ruler_tick = text_muted;
+    pc.canvas_hud_bg = bg_secondary;
+    pc.canvas_hud_border = stroke_secondary;
+    pc.canvas_hud_text = text;
+    pc.canvas_hud_spinner = accent_light;
+    pc.dialog_busy_spinner = accent_light;
+    pc.brush_leash = accent_light;
+
+    // Barras de rolagem. A trilha do canvas acompanha o entorno do canvas.
+    pc.canvas_scrollbar_track = bg_deepest;
+    pc.panel_scrollbar_track = bg_primary;
+    pc.scrollbar_handle_bg = control;
+    pc.scrollbar_handle_border = stroke_secondary;
+    pc.scrollbar_handle_hover_bg = rgb(0x4a4e5c);
+
+    pc.group_box_border = stroke_secondary;
+
+    // Diálogo de Preferências.
+    pc.dialog_tab_bg = bg_secondary;
+    pc.dialog_tab_border = stroke;
+    pc.dialog_tab_text = text_body;
+    pc.dialog_tab_hover_bg = control;
+    pc.dialog_tab_selected_bg = bg_primary;
+    pc.panel_card_bg = bg_primary;
+    pc.panel_card_border = stroke;
+    pc.color_button_border = stroke_secondary;
+    pc.color_button_hover_bg = control;
+    pc.color_button_hover_border = accent_light;
+    pc.grid_preview_bg = bg_tertiary;
+    pc.grid_preview_border = stroke_secondary;
+
+    pc.link_text = accent_light;
+
+    // Ajuda > Sobre.
+    pc.splash_bg = bg_tertiary;
+    pc.splash_border = stroke;
+    pc.splash_title_text = text;
+    pc.splash_subtitle_text = text_body;
+    pc.splash_body_text = text;
+    pc.splash_caption_text = text_muted;
+    pc.splash_status_text = text_faint;
+    pc.splash_link_text = accent_light;
+    pc.splash_button_bg = control;
+    pc.splash_button_border = stroke_secondary;
+    pc.splash_button_hover_bg = control_hover;
+    pc.splash_primary_bg = accent;
+    pc.splash_primary_border = accent_light;
+    pc.splash_primary_hover_bg = accent_light;
+
+    // Editor de atalhos.
+    pc.hotkey_hint_text = text_muted;
+    pc.hotkey_muted_text = text_muted;
+    pc.hotkey_header_border = stroke;
+    pc.hotkey_search_bg = bg_secondary;
+    pc.hotkey_search_border = stroke_secondary;
+    pc.hotkey_search_text = text_body;
+    pc.hotkey_shortcut_text = accent_light;
+    pc.hotkey_shortcut_active_text = accent_pale;
+    pc.hotkey_recording_bg = accent_soft;
+    pc.hotkey_recording_text = accent_pale;
+
+    // Popup do seletor de fontes.
+    pc.popup_list_bg = bg_secondary;
+
+    // Novo Documento.
+    pc.nd_section_text = text_muted;
+    pc.nd_chip_border = stroke_secondary;
+    pc.nd_chip_text = text_body;
+    pc.nd_field_border = stroke_secondary;
+    pc.nd_field_disabled_bg = bg_secondary;
+    pc.nd_field_disabled_border = stroke;
+    pc.nd_field_disabled_text = text_off;
+    pc.nd_card_disabled_bg = bg_secondary;
+    pc.nd_card_disabled_border = stroke;
+    pc.nd_card_selected_bg = accent_soft;
+    pc.nd_card_hover_border = accent_light;
+    pc.nd_card_title_text = text;
+    pc.nd_card_title_disabled_text = text_off;
+    pc.nd_card_detail_text = text_muted;
+    pc.nd_card_detail_disabled_text = text_off;
+    pc.nd_card_meta_text = text_faint;
+    pc.nd_card_meta_disabled_text = rgb(0x4a4e5a);
+    pc.nd_thumb_fill = control;
+    pc.nd_thumb_fill_disabled = stroke;
+    pc.nd_thumb_border = text_muted;
+    pc.nd_thumb_border_disabled = stroke_hover;
+    pc.nd_thumb_outline = text_muted;
+
+    // Tamanho da Imagem e Tamanho da Tela: família neutra "elevada" própria,
+    // mantida um pouco mais clara que o resto, como no Dark.
+    pc.dlg_raised_bg = control;
+    pc.dlg_raised_text = text;
+    pc.dlg_raised_border = stroke_hover;
+    pc.dlg_raised_hover_bg = control_hover;
+    pc.dlg_raised_hover_border = text_faint;
+    pc.dlg_field_bg = bg_tertiary;
+    pc.dlg_field_border = stroke;
+    pc.dlg_field_text = text_body;
+    pc.dlg_button_bg = control;
+    pc.dlg_button_border = stroke_secondary;
+    pc.dlg_button_focus_bg = control_hover;
+    pc.dlg_focus_border = accent_light;
+    pc.dlg_focus_ring = accent;
+    pc.dlg_anchor_active_bg = accent_soft_hover;
+    pc.dlg_neutral_border = text_faint;
+    pc.dlg_neutral_border_bright = text_muted;
+    pc.dlg_divider = stroke_hover;
+    pc.dlg_tab_bg = bg_secondary;
+    pc.dlg_tab_border = stroke_secondary;
+    pc.dlg_grid_bg = bg_secondary;
+    pc.dlg_grid_border = stroke_secondary;
+    pc.dlg_cell_bg = control;
+    pc.dlg_cell_border = stroke_hover;
+    pc.dlg_cell_hover_bg = control_hover;
+    pc.dlg_action_border = stroke_hover;
+    pc.dlg_action_hover_border = accent_light;
+
+    pc.swatch_border = text_faint;
+
+    // Famílias de botão e superfície compartilhadas.
+    pc.primary_bg = accent_dark;
+    pc.primary_border = accent;
+    pc.primary_hover_bg = accent;
+    pc.neutral_button_hover_bg = control_hover;
+    pc.neutral_button_hover_border = stroke_hover;
+    pc.list_surface_bg = bg_secondary;
+    pc.list_surface_border = stroke;
+    pc.selection_soft_bg = accent_soft;
+
+    // Painel inicial.
+    pc.start_panel_title_text = text;
+    pc.start_panel_tagline_text = text_muted;
+    pc.start_panel_muted_text = text_muted;
+    pc.start_panel_status_text = text_faint;
+    pc.start_panel_section_text = text_muted;
+    pc.start_panel_hint_text = text_faint;
+    pc.start_panel_row_hover_bg = control;
+
+    // Tinta dos ícones.
+    pc.icon_ink = rgb(0xe2e7ef);
+    pc.icon_accent = accent_light;
+    pc.icon_accent_soft = rgb(0xf3e8ff);
+    pc.icon_accent_tint = accent_pale;
+    pc.icon_surface = bg_primary;
+
+    return pc;
+  }();
+  return palette;
+}
+
 const ThemePalette& theme(ColorScheme scheme) {
-  return scheme == ColorScheme::Light ? light_palette() : dark_palette();
+  switch (scheme) {
+    case ColorScheme::Light:
+      return light_palette();
+    case ColorScheme::ProjectClub:
+      return project_club_palette();
+    case ColorScheme::Dark:
+      break;
+  }
+  return dark_palette();
 }
 
 const ThemePalette& theme() { return theme(g_active_scheme); }

@@ -26,8 +26,10 @@ QString color_scheme_preference_to_token(ColorSchemePreference preference) {
       return QStringLiteral("dark");
     case ColorSchemePreference::Light:
       return QStringLiteral("light");
+    case ColorSchemePreference::ProjectClub:
+      return QStringLiteral("projectclub");
   }
-  return QStringLiteral("system");
+  return QStringLiteral("projectclub");
 }
 
 ColorSchemePreference color_scheme_preference_from_token(const QString& token) {
@@ -37,7 +39,11 @@ ColorSchemePreference color_scheme_preference_from_token(const QString& token) {
   if (token == QStringLiteral("light")) {
     return ColorSchemePreference::Light;
   }
-  return ColorSchemePreference::FollowSystem;
+  if (token == QStringLiteral("system")) {
+    return ColorSchemePreference::FollowSystem;
+  }
+  // Token vazio ou desconhecido: cai no padrão do Project Club.
+  return ColorSchemePreference::ProjectClub;
 }
 
 ThemeManager& ThemeManager::instance() {
@@ -72,6 +78,8 @@ ColorScheme ThemeManager::resolved_scheme() const {
       return ColorScheme::Dark;
     case ColorSchemePreference::Light:
       return ColorScheme::Light;
+    case ColorSchemePreference::ProjectClub:
+      return ColorScheme::ProjectClub;
     case ColorSchemePreference::FollowSystem:
       break;
   }
@@ -94,6 +102,10 @@ void ThemeManager::mirror_scheme_onto_qt() {
       return;
     case ColorSchemePreference::Light:
       hints->setColorScheme(Qt::ColorScheme::Light);
+      return;
+    case ColorSchemePreference::ProjectClub:
+      // O tema do Project Club é escuro: o chrome nativo segue o modo escuro.
+      hints->setColorScheme(Qt::ColorScheme::Dark);
       return;
   }
 }
@@ -124,7 +136,7 @@ void ThemeManager::load_saved_preference() {
   const auto token =
       settings
           .value(color_scheme_key(),
-                 color_scheme_preference_to_token(ColorSchemePreference::FollowSystem))
+                 color_scheme_preference_to_token(ColorSchemePreference::ProjectClub))
           .toString();
   set_preference(color_scheme_preference_from_token(token), /*persist=*/false);
 }

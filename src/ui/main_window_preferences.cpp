@@ -467,6 +467,9 @@ void MainWindow::show_preferences() {
 
   auto* color_scheme_combo = new QComboBox(application_group);
   color_scheme_combo->setObjectName(QStringLiteral("preferencesColorSchemeCombo"));
+  // "Project Club" é o tema padrão (nome próprio, não traduzido).
+  color_scheme_combo->addItem(QStringLiteral("Project Club"),
+                              color_scheme_preference_to_token(ColorSchemePreference::ProjectClub));
   color_scheme_combo->addItem(tr("Follow system"),
                               color_scheme_preference_to_token(ColorSchemePreference::FollowSystem));
   color_scheme_combo->addItem(tr("Dark"), color_scheme_preference_to_token(ColorSchemePreference::Dark));

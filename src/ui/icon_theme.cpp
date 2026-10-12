@@ -37,6 +37,13 @@ QString light_icon_resource_path(const QString& name) {
   return QStringLiteral(":/patchy/icons/light/%1.svg").arg(name);
 }
 
+// Variantes do tema Project Club para os SVGs referenciados por stylesheet que
+// não ficam bem com as cores do Dark (hoje só o pontilhado da barra de rolagem
+// do canvas, que precisa acompanhar o fundo #0E0F12).
+QString project_club_icon_resource_path(const QString& name) {
+  return QStringLiteral(":/patchy/icons/projectclub/%1.svg").arg(name);
+}
+
 // Renders on demand and reparses only when the scheme moves. Only the parsed
 // renderer is cached: rasterizing a 32x32 path set is microseconds, while parsing
 // the XML is not, and a pixmap cache is one more thing that can go stale.
@@ -198,6 +205,12 @@ QString themed_icon_url(const QString& name) {
     const auto light_path = light_icon_resource_path(name);
     if (QFile::exists(light_path)) {
       return light_path;
+    }
+  }
+  if (active_color_scheme() == ColorScheme::ProjectClub) {
+    const auto project_club_path = project_club_icon_resource_path(name);
+    if (QFile::exists(project_club_path)) {
+      return project_club_path;
     }
   }
   return icon_resource_path(name);
