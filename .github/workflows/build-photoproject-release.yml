@@ -57,12 +57,20 @@ jobs:
           path: photoproject-${{ inputs.version }}-win.zip
 
   build-linux:
-    runs-on: ubuntu-24.04
+    # Ubuntu 22.04 (glibc 2.35): o pacote roda também em distribuições mais
+    # antigas que o 24.04. O compilador vem do PPA (GCC 13, C++20) e a
+    # libstdc++ dele vai junto no pacote.
+    runs-on: ubuntu-22.04
+    env:
+      CC: gcc-13
+      CXX: g++-13
     steps:
       - uses: actions/checkout@v4
       - name: Instalar dependências do sistema
         run: |
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
           sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq gcc-13 g++-13
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
             libgl-dev libegl-dev libxkbcommon-dev libxkbcommon-x11-0 \
             libfontconfig1 libfreetype6 libdbus-1-3 \
@@ -74,7 +82,7 @@ jobs:
             ninja-build
       - name: Instalar Qt 6.8.3
         run: |
-          pip install --break-system-packages -q aqtinstall
+          pip install --break-system-packages -q aqtinstall || pip install -q aqtinstall
           aqt install-qt linux desktop 6.8.3 linux_gcc_64 -m qtimageformats qtpdf -O "$GITHUB_WORKSPACE/.deps/Qt"
       - name: Configurar e compilar (preset linux-release)
         run: |
@@ -97,6 +105,9 @@ jobs:
           for lib in $(ldd build/linux-release/PhotoProject | grep "$QT_DIR" | awk '{print $3}'); do
             cp -n "$lib" "$STAGE/lib/" || true
           done
+          # libstdc++/libgcc do GCC 13 (o sistema base pode ter versões mais antigas)
+          cp -L "$(g++-13 -print-file-name=libstdc++.so.6)" "$STAGE/lib/"
+          cp -L "$(g++-13 -print-file-name=libgcc_s.so.1)" "$STAGE/lib/" 2>/dev/null || true
           cp "$QT_DIR"/plugins/platforms/libqxcb.so "$STAGE/plugins/platforms/" 2>/dev/null || true
           cp "$QT_DIR"/plugins/platforms/libqoffscreen.so "$STAGE/plugins/platforms/" 2>/dev/null || true
           for p in qgif qjpeg qsvg qtiff qwebp; do
