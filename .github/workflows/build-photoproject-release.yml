@@ -105,6 +105,9 @@ jobs:
           for lib in $(ldd build/linux-release/PhotoProject | grep "$QT_DIR" | awk '{print $3}'); do
             cp -n "$lib" "$STAGE/lib/" || true
           done
+          # libxcb-cursor: exigida pelo plugin xcb do Qt 6.5+ e ausente por padrão
+          # em várias distribuições (ex.: Ubuntu 22.04).
+          cp -L /usr/lib/x86_64-linux-gnu/libxcb-cursor.so.0 "$STAGE/lib/"
           # libstdc++/libgcc do GCC 13 (o sistema base pode ter versões mais antigas)
           cp -L "$(g++-13 -print-file-name=libstdc++.so.6)" "$STAGE/lib/"
           cp -L "$(g++-13 -print-file-name=libgcc_s.so.1)" "$STAGE/lib/" 2>/dev/null || true

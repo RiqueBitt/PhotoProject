@@ -34,6 +34,7 @@ jobs:
       - name: Dependências para rodar e capturar
         run: |
           sudo apt-get update -qq
+          sudo apt-get install -y -qq libxcb-cursor0 libxkbcommon-x11-0 libegl1 libopengl0 || true
           sudo apt-get install -y -qq xvfb xdotool imagemagick openbox libfuse2 libgl1 libegl1 libopengl0 libxkbcommon-x11-0 \
             libxcb-cursor0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-shape0 libxcb-xinerama0 \
             libnss3 libgbm1 libasound2 libgtk-3-0 libwebkit2gtk-4.0-37 libsecret-1-0 libnotify4 libxss1 fonts-noto-core fonts-noto-color-emoji mesa-vulkan-drivers || true
