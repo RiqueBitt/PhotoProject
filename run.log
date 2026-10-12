@@ -1,0 +1,53 @@
+
+
+Openbox
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+captura 1: inicio
+captura 2: novo-documento
+captura 3: tela-em-branco
+captura 4: pincel
+captura 5: nova-camada
+captura 6: selecao
+captura 7: preenchimento
+captura 8: texto
+captura 9: curvas
+captura 10: niveis
+captura 11: matiz-saturacao
+captura 12: preferencias
+captura 13: menu-arquivo
+captura 14: menu-imagem
+total 1104
+drwxr-xr-x  2 runner runner   4096 Oct 12 08:03 .
+drwxr-xr-x 17 runner runner   4096 Oct 12 08:02 ..
+-rw-r--r--  1 runner runner  83143 Oct 12 08:02 01-inicio.png
+-rw-r--r--  1 runner runner 107527 Oct 12 08:02 02-novo-documento.png
+-rw-r--r--  1 runner runner  63053 Oct 12 08:03 03-tela-em-branco.png
+-rw-r--r--  1 runner runner  70887 Oct 12 08:03 04-pincel.png
+-rw-r--r--  1 runner runner  72809 Oct 12 08:03 05-nova-camada.png
+-rw-r--r--  1 runner runner  73235 Oct 12 08:03 06-selecao.png
+-rw-r--r--  1 runner runner  61891 Oct 12 08:03 07-preenchimento.png
+-rw-r--r--  1 runner runner  63676 Oct 12 08:03 08-texto.png
+-rw-r--r--  1 runner runner  93532 Oct 12 08:03 09-curvas.png
+-rw-r--r--  1 runner runner  78662 Oct 12 08:03 10-niveis.png
+-rw-r--r--  1 runner runner  77052 Oct 12 08:03 11-matiz-saturacao.png
+-rw-r--r--  1 runner runner  63864 Oct 12 08:03 12-preferencias.png
+-rw-r--r--  1 runner runner  92581 Oct 12 08:03 13-menu-arquivo.png
+-rw-r--r--  1 runner runner  83838 Oct 12 08:03 14-menu-imagem.png
+-rw-r--r--  1 runner runner     60 Oct 12 08:03 app.log
+-rw-r--r--  1 runner runner    338 Oct 12 08:03 run.log
